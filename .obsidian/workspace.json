@@ -176,11 +176,16 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "left",
   "lastOpenFiles": [
+    "audits/AUDIT_2026-05-23_test-task3.md",
+    "audits/AUDIT_TEMPLATE.md",
+    "audits/AUDIT_TEMPLATE.md.tmp.29612.d193040b1141",
+    "audits",
     "reference_claude-surfaces_workflow-guide.md",
     "sop_claude-code_skill-installation.md.tmp.28556.77e999d2cbd8",
     "_INDEX.md"
