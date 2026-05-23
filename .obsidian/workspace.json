@@ -182,6 +182,12 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "_INDEX.md.tmp.22940.1cc309a69dd3",
+    "_INDEX.md.tmp.22940.8002cbce9451",
+    "_INDEX.md.tmp.22940.fbac2cdf79b6",
+    "extracts/EXTRACT_2026-05-23_copy-session-archive-files-to-data-directory.md",
+    "extracts/EXTRACT_2026-05-20_workflow-lab-env-launch-test.md",
+    "extracts/EXTRACT_2026-05-19_wiki-reorganization-agent-routable-structure.md",
     "extracts/EXTRACT_2026-05-23_copy-session-jsonl-files-to-data-directory.md",
     "extracts/EXTRACT_2026-05-20_env-launch-skill-execution.md",
     "extracts",
@@ -197,9 +203,7 @@
     "audits/AUDIT_2026-05-23_test-task3.md",
     "audits/AUDIT_TEMPLATE.md",
     "audits/AUDIT_TEMPLATE.md.tmp.29612.d193040b1141",
-    "audits",
     "reference_claude-surfaces_workflow-guide.md",
-    "sop_claude-code_skill-installation.md.tmp.28556.77e999d2cbd8",
     "_INDEX.md"
   ]
 }

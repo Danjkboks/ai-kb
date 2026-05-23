@@ -96,11 +96,9 @@ updated: 2026-05-23
 
 | File | What it covers |
 |---|---|
-| [AUDIT_TEMPLATE.md](audits/AUDIT_TEMPLATE.md) | Blank template used by session-audit.ps1 |
-| [audit_2026-05-19_phase-1.md](audit_2026-05-19_phase-1.md) | Phase 1 audit — metadata extraction |
-| [audit_2026-05-19_phase-2.md](audit_2026-05-19_phase-2.md) | Phase 2 audit — search interface |
-| [audit_2026-05-19_phase-3.md](audit_2026-05-19_phase-3.md) | Phase 3 audit — workflow migration |
-| [audit_2026-05-19_phase-1-3-fixes.md](audit_2026-05-19_phase-1-3-fixes.md) | Fixes applied across phases 1-3 |
+| [[audits/AUDIT_TEMPLATE]] | Blank template used by session-audit.ps1 |
+| [[audits/AUDIT_2026-05-23_phase1-complete]] | Phase 1 complete — capture + retrieve |
+| [[audits/AUDIT_2026-05-23_phase2-n8n-pipeline]] | Phase 2 — n8n knowledge-extractor pipeline |
 
 ---
 
@@ -110,7 +108,13 @@ updated: 2026-05-23
 > Populated by n8n + DeepSeek V3.2 batch processing (Phase 2 — not yet live)
 > Source: `data\queue\pending\` → processed → written here
 
-*(empty — Phase 2 not yet active)*
+| File | What it covers |
+|---|---|
+| [[extracts/EXTRACT_2026-05-19_wiki-reorganization-agent-routable-structure]] | Wiki reorg into agent-routable structure |
+| [[extracts/EXTRACT_2026-05-20_env-launch-skill-execution]] | env-launch skill execution |
+| [[extracts/EXTRACT_2026-05-20_workflow-lab-env-launch-test]] | workflow-lab env-launch test |
+| [[extracts/EXTRACT_2026-05-23_copy-session-archive-files-to-data-directory]] | Copy session archive files to data dir |
+| [[extracts/EXTRACT_2026-05-23_copy-session-jsonl-files-to-data-directory]] | Copy session .jsonl files to data dir |
 
 ---
 
@@ -119,7 +123,18 @@ updated: 2026-05-23
 > Location: `knowledge\skills\` subfolder
 > Populated by n8n skill/agent proposal pipeline (Phase 2 — not yet live)
 
-*(empty — Phase 2 not yet active)*
+*(folder not yet created — no generated skill files)*
+
+---
+
+## Prompts — System prompts fetched at runtime
+
+> Location: `knowledge\prompts\` subfolder
+> Version-controlled prompts fetched via GitHub raw by the n8n pipeline
+
+| File | What it covers |
+|---|---|
+| [[prompts/session-extractor-prompt]] | DeepSeek system prompt for session-knowledge-extractor |
 
 ---
 
