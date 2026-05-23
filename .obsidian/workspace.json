@@ -182,6 +182,8 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.5b17321408ba",
+    "extracts/EXTRACT_2026-05-20_docker-crash-restart-workflow-lab.md",
     "_INDEX.md.tmp.22940.8a965c589eb3",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md",
@@ -203,7 +205,6 @@
     "prompts",
     "audits/AUDIT_2026-05-23_phase1-complete.md.tmp.29612.345f71aed3bc",
     "audits/AUDIT_2026-05-23_phase1-complete.md",
-    "_INDEX.md.tmp.29612.6e4b49edd2ee",
     "audits/AUDIT_2026-05-23_test-task3.md",
     "audits/AUDIT_TEMPLATE.md",
     "reference_claude-surfaces_workflow-guide.md",
