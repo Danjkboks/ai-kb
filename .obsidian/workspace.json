@@ -182,6 +182,11 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "_INDEX.md.tmp.22940.8a965c589eb3",
+    "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
+    "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md",
+    "extracts/EXTRACT_2026-05-19_n8n-workflow-complexity-assessment.md",
+    "extracts/EXTRACT_2026-05-18_memory-context-strategy-implementation.md",
     "_INDEX.md.tmp.22940.1cc309a69dd3",
     "_INDEX.md.tmp.22940.8002cbce9451",
     "_INDEX.md.tmp.22940.fbac2cdf79b6",
@@ -199,10 +204,8 @@
     "audits/AUDIT_2026-05-23_phase1-complete.md.tmp.29612.345f71aed3bc",
     "audits/AUDIT_2026-05-23_phase1-complete.md",
     "_INDEX.md.tmp.29612.6e4b49edd2ee",
-    "_INDEX.md.tmp.29612.6e38234a37c9",
     "audits/AUDIT_2026-05-23_test-task3.md",
     "audits/AUDIT_TEMPLATE.md",
-    "audits/AUDIT_TEMPLATE.md.tmp.29612.d193040b1141",
     "reference_claude-surfaces_workflow-guide.md",
     "_INDEX.md"
   ]

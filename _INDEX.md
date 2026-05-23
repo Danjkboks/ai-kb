@@ -99,6 +99,7 @@ updated: 2026-05-23
 | [[audits/AUDIT_TEMPLATE]] | Blank template used by session-audit.ps1 |
 | [[audits/AUDIT_2026-05-23_phase1-complete]] | Phase 1 complete — capture + retrieve |
 | [[audits/AUDIT_2026-05-23_phase2-n8n-pipeline]] | Phase 2 — n8n knowledge-extractor pipeline |
+| [[audits/AUDIT_2026-05-24_index-wikilinks-extract-links]] | _INDEX wikilink fix + extract Links block |
 
 ---
 
