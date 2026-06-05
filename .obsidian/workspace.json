@@ -182,6 +182,10 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "extracts/EXTRACT_2026-05-28_watcher-ps1-state-verification.md",
+    "extracts/EXTRACT_2026-05-28_container-audit-llmlingua-cpu-spike.md",
+    "extracts/EXTRACT_2026-05-27_itsm-document-clarification-non-technical-readers.md",
+    "extracts/EXTRACT_2026-05-21_memory-system-audit-session-context.md",
     "audits/AUDIT_2026-06-05_watcher-retry-llmlingua-guard.md.tmp.31696.084152d0812d",
     "audits/AUDIT_2026-06-05_watcher-retry-llmlingua-guard.md",
     "extracts/EXTRACT_2026-06-05_session-watcher-retry-storm-fix.md",
@@ -213,10 +217,6 @@
     "audits/AUDIT_2026-05-23_phase2-n8n-pipeline.md",
     "prompts/session-extractor-prompt.md",
     "prompts/session-extractor-prompt.md.tmp.7140.941aee8d9c7f",
-    "prompts",
-    "audits/AUDIT_2026-05-23_phase1-complete.md",
-    "audits/AUDIT_2026-05-23_test-task3.md",
-    "audits/AUDIT_TEMPLATE.md",
-    "reference_claude-surfaces_workflow-guide.md"
+    "audits/AUDIT_2026-05-23_phase1-complete.md"
   ]
 }
