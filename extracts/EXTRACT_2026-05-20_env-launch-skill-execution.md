@@ -3,47 +3,53 @@ type: extract
 date: 2026-05-20
 session_id: env-launch-skill-execution
 surface: claude-code
-environment: env1-claude-desktop
-topics: [n8n, docker, infra, memory]
+environment: env2-workflow-lab
+topics: [docker, n8n, infra, memory]
 source_file: 2026-05-20-134142_7a4aed34-476e-4549-ad10-864367b3afa6.jsonl
-processed_at: 2026-05-23T19:09:39.976Z
+processed_at: 2026-06-05T10:17:14.722Z
 ---
 
 # Session Extract: env-launch-skill-execution
 
 ## Decisions
-- **Use parallel tool calls for env-launch skill (Bash script + memory reads) instead of sequential execution**: Script takes 2-30s, memory reads are free; doing serially wastes user's time
+- **Execute env-launch skill via parallel tool calls (Bash + Read tools) in a single message**: Parallelism is critical to avoid wasting user time; script takes 2-30s and memory reads are independent
 
 ## Problems Solved
-- **Cloudflare tunnel failed to start due to missing origin certificate**: Tunnel exited with error 'No file cert specify origin certificate path'. Known failure mode - requires running cloudflared tunnel login in terminal and re-invoking skill
+- **Cloudflare tunnel fails due to missing origin certificate**: Script detected tunnel exit with cert error; user must run 'cloudflared tunnel login' manually to fix
 
 ## Errors Encountered
-- [workaround] Cloudflare tunnel exited 2026-05-20T11:26:10Z with error: 'No file cert specify origin certificate path' -> Run cloudflared tunnel login in terminal to fix certificate, then re-invoke skill
+- [pending] Cloudflare tunnel exited with 'No file cert' error: origin certificate path missing -> User needs to run 'cloudflared tunnel login' in terminal to generate certificate
 
 ## Patterns Identified
-- Parallel tool calls critical for env-launch skill to avoid serial time waste
-- Cloudflare tunnel certificate error is a known failure mode with documented recovery steps
+- env-launch skill uses parallel tool calls (Bash + multiple Read) for efficiency
+- Cloudflare tunnel certificate error is a known failure mode requiring manual login
+- Skill execution follows 'Read Memory First' pattern to avoid redundant token costs
 
 ## Files Modified
-- modified: workflow-lab/scripts/env-launch.ps1 -- Executed to launch Workflow Lab stack (Docker containers + health checks)
-- modified: memory/SESSION_SNAPSHOT.md -- Updated with fresh stack status table and tunnel URL (though tunnel failed)
+- modified: workflow-lab\scripts\env-launch.ps1 -- Executed to start Docker containers and check health; updated SESSION_SNAPSHOT.md
+- modified: memory\SESSION_SNAPSHOT.md -- Updated with stack status and tunnel URL (though tunnel failed)
 
 ## Next Session Must Know
-- Cloudflare tunnel failed due to missing origin certificate - run 'cloudflared tunnel login' in terminal to fix
-- Local services (n8n:5678, LLMLingua:5001, Qdrant:6333, Langfuse:3000) are usable despite tunnel failure
-- env-launch.ps1 script supports SkipTunnel flag for when certificate is broken
-- Stack status: agent-llmlingua, langfuse, qdrant, n8n all healthy (langfuse-db also running)
-- Total launch time: 20.1s for container startup and health checks
-- Project context shows Phase 5 (Optimization Stack) completed 2026-05-19 with prompt caching, Qdrant indexing, Langfuse deployment
-- Workflow Indexation System has 2,061 workflows indexed with 4 phases complete
-- Budget constraint: 50€/month, OpenRouter only LLM gateway
+- Cloudflare tunnel failed due to missing origin certificate; run 'cloudflared tunnel login' manually
+- Local services (n8n:5678, LLMLingua:5001, Qdrant:6333, Langfuse:3000) are up and usable despite tunnel failure
+- env-launch.ps1 script takes ~20 seconds; uses SkipTunnel flag if cert broken and only local services needed
+- Memory files (project_progress.md, project_stack_status.md) were refreshed; contain Phase 5 (May 19) updates
+- Stack status: Obsidian+GitHub syncing, n8n live, LLMLingua 43% compression, Qdrant 2,061 workflows indexed
+- Budget constraint: 50€/month, OpenRouter only LLM gateway, DAILY_BUDGET_USD=1.50
+- Model selection framework: evaluate task complexity, use Haiku/Sonnet/Opus to minimize debugging
+- Agent security framework mandates zero tolerance for hidden commands, overrides, unsafe code
 
 ## Skill Candidates
-- env-launch: Launches Workflow Lab stack (Docker n8n, Qdrant, Langfuse, LLMLingua, Cloudflare tunnel) with health checks and memory refresh
+- parallel-tool-caller: Executes multiple independent tool calls (Bash + Read) in a single message for speed
 
 ## Token Waste Flags
 none
 
 ## Knowledge Base Updates
-- [update] runbook_stack_master-build.md: Add Cloudflare tunnel certificate error as known failure mode with recovery steps
-- [update] sop_docker_container-management.md: Document env-launch.ps1 script behavior, SkipTunnel flag, and parallel execution pattern
+- [update] sop_docker_container-management.md: Add Cloudflare tunnel certificate error as known failure mode with manual login fix
+- [update] runbook_stack_master-build.md: Include env-launch.ps1 parallel execution pattern and tunnel cert troubleshooting
+- [no-action] : Session was a routine skill execution; no new architectural knowledge discovered
+
+## Links
+related:: [[_INDEX]]
+tags: docker, n8n, infra, memory

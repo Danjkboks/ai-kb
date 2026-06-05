@@ -192,6 +192,14 @@
   },
   "active": "8efdb8698a7f339d",
   "lastOpenFiles": [
+    "extracts/EXTRACT_2026-06-05_extractor-pipeline-rebuild-local-no-github.md",
+    "extracts/EXTRACT_2026-06-05_watcher-retry-storm-llmlingua-fix.md",
+    "extracts/EXTRACT_2026-05-28_phase1-factory-hardening-watcher-ps1-update.md",
+    "extracts/EXTRACT_2026-05-28_container-audit-cpu-spike-investigation.md",
+    "extracts/EXTRACT_2026-05-28_container-audit-dify-stack-cpu-runaway.md",
+    "extracts/EXTRACT_2026-05-28_bootstrap-project-initializer.md",
+    "audits/AUDIT_2026-06-05_extractor-local-only-rebuild.md.tmp.22728.de311b21955a",
+    "audits/AUDIT_2026-06-05_extractor-local-only-rebuild.md",
     "extracts/EXTRACT_2026-06-05_smoke-test-local-extractor-pipeline.md",
     "extracts/_writetest2.tmp",
     "extracts/_writetest.tmp",
@@ -214,19 +222,11 @@
     "extracts/EXTRACT_2026-05-28_bootstrap-project-initialiser.md",
     "extracts/EXTRACT_2026-05-27_itsm-evsm-document-clarification-non-technical.md",
     "extracts/EXTRACT_2026-05-23_phase1-task1-directory-setup.md",
-    "extracts/EXTRACT_2026-05-21_memory-sync-and-session-wrap-up.md",
-    "extracts/EXTRACT_2026-05-18_memory-architect-system-deployment.md",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.5b17321408ba",
-    "extracts/EXTRACT_2026-05-20_docker-crash-restart-workflow-lab.md",
     "_INDEX.md.tmp.22940.8a965c589eb3",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
-    "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md",
-    "extracts/EXTRACT_2026-05-19_n8n-workflow-complexity-assessment.md",
-    "extracts/EXTRACT_2026-05-18_memory-context-strategy-implementation.md",
     "_INDEX.md.tmp.22940.1cc309a69dd3",
     "_INDEX.md.tmp.22940.8002cbce9451",
-    "_INDEX.md.tmp.22940.fbac2cdf79b6",
-    "extracts/EXTRACT_2026-05-23_copy-session-archive-files-to-data-directory.md",
-    "extracts"
+    "_INDEX.md.tmp.22940.fbac2cdf79b6"
   ]
 }
