@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 288.50052642822266
+    "width": 359.5049057006836
   },
   "right": {
     "id": "8b0c3d1c43cd701e",
@@ -176,7 +176,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -192,6 +193,7 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "audits/REVIEW_2026-06-05_mine-patterns-audit-extension.md",
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md.tmp.22728.4ad96baf93b8",
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md",
     "extracts/EXTRACT_2026-06-05_extractor-local-rebuild-watcher-scheduled.md",
@@ -226,7 +228,6 @@
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.5b17321408ba",
     "_INDEX.md.tmp.22940.8a965c589eb3",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
-    "_INDEX.md.tmp.22940.1cc309a69dd3",
-    "_INDEX.md.tmp.22940.8002cbce9451"
+    "_INDEX.md.tmp.22940.1cc309a69dd3"
   ]
 }
