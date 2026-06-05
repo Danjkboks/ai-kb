@@ -193,6 +193,8 @@
   },
   "active": "left",
   "lastOpenFiles": [
+    "audits/AUDIT_2026-06-05_pattern-mining-review-cmd.md.tmp.11968.55cc414e42bf",
+    "audits/AUDIT_2026-06-05_pattern-mining-review-cmd.md",
     "audits/REVIEW_2026-06-05_mine-patterns-audit-extension.md",
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md.tmp.22728.4ad96baf93b8",
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md",
@@ -223,8 +225,6 @@
     "audits/AUDIT_2026-06-05_watcher-retry-llmlingua-guard.md",
     "extracts/EXTRACT_2026-06-05_session-watcher-retry-storm-fix.md",
     "extracts/EXTRACT_2026-05-28_session-watcher-ps1-state-verification.md",
-    "extracts/EXTRACT_2026-05-28_container-audit-dify-stack-cpu-spike.md",
-    "extracts/EXTRACT_2026-05-28_container-audit-dify-stack-assessment.md",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.5b17321408ba",
     "_INDEX.md.tmp.22940.8a965c589eb3",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
