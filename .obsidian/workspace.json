@@ -192,6 +192,10 @@
   },
   "active": "8efdb8698a7f339d",
   "lastOpenFiles": [
+    "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md.tmp.22728.4ad96baf93b8",
+    "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md",
+    "extracts/EXTRACT_2026-06-05_extractor-local-rebuild-watcher-scheduled.md",
+    "extracts/EXTRACT_2026-06-05_extractor-local-rebuild-watcher-scheduled.md.tmp.22728.14d43575ce4a",
     "extracts/EXTRACT_2026-06-05_extractor-pipeline-rebuild-local-no-github.md",
     "extracts/EXTRACT_2026-06-05_watcher-retry-storm-llmlingua-fix.md",
     "extracts/EXTRACT_2026-05-28_phase1-factory-hardening-watcher-ps1-update.md",
@@ -219,14 +223,10 @@
     "extracts/EXTRACT_2026-05-28_session-watcher-ps1-state-verification.md",
     "extracts/EXTRACT_2026-05-28_container-audit-dify-stack-cpu-spike.md",
     "extracts/EXTRACT_2026-05-28_container-audit-dify-stack-assessment.md",
-    "extracts/EXTRACT_2026-05-28_bootstrap-project-initialiser.md",
-    "extracts/EXTRACT_2026-05-27_itsm-evsm-document-clarification-non-technical.md",
-    "extracts/EXTRACT_2026-05-23_phase1-task1-directory-setup.md",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.5b17321408ba",
     "_INDEX.md.tmp.22940.8a965c589eb3",
     "audits/AUDIT_2026-05-24_index-wikilinks-extract-links.md.tmp.22940.0f826f1d0d21",
     "_INDEX.md.tmp.22940.1cc309a69dd3",
-    "_INDEX.md.tmp.22940.8002cbce9451",
-    "_INDEX.md.tmp.22940.fbac2cdf79b6"
+    "_INDEX.md.tmp.22940.8002cbce9451"
   ]
 }
