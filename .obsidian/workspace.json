@@ -160,13 +160,23 @@
               "icon": "lucide-list",
               "title": "Outline of _INDEX"
             }
+          },
+          {
+            "id": "8efdb8698a7f339d",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,7 +190,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "left",
+  "active": "8efdb8698a7f339d",
   "lastOpenFiles": [
     "extracts/EXTRACT_2026-05-28_watcher-ps1-state-verification.md",
     "extracts/EXTRACT_2026-05-28_container-audit-llmlingua-cpu-spike.md",
