@@ -192,6 +192,15 @@
   },
   "active": "8efdb8698a7f339d",
   "lastOpenFiles": [
+    "extracts/EXTRACT_2026-06-05_smoke-test-local-extractor-pipeline.md",
+    "extracts/_writetest2.tmp",
+    "extracts/_writetest.tmp",
+    "extracts/EXTRACT_2026-06-05_watcher-retry-llmlingua-guard.md",
+    "extracts/EXTRACT_2026-06-05_llmlingua-oom-watcher-diagnosis.md",
+    "extracts/EXTRACT_2026-05-24_memory-rag-architecture-build.md",
+    "extracts/EXTRACT_2026-05-24_index-wikilinks-extract-links.md",
+    "extracts/EXTRACT_2026-05-23_phase2-n8n-pipeline.md",
+    "extracts/EXTRACT_2026-05-23_phase1-complete.md",
     "extracts/EXTRACT_2026-05-28_watcher-ps1-state-verification.md",
     "extracts/EXTRACT_2026-05-28_container-audit-llmlingua-cpu-spike.md",
     "extracts/EXTRACT_2026-05-27_itsm-document-clarification-non-technical-readers.md",
@@ -218,15 +227,6 @@
     "_INDEX.md.tmp.22940.8002cbce9451",
     "_INDEX.md.tmp.22940.fbac2cdf79b6",
     "extracts/EXTRACT_2026-05-23_copy-session-archive-files-to-data-directory.md",
-    "extracts/EXTRACT_2026-05-20_workflow-lab-env-launch-test.md",
-    "extracts/EXTRACT_2026-05-19_wiki-reorganization-agent-routable-structure.md",
-    "extracts/EXTRACT_2026-05-23_copy-session-jsonl-files-to-data-directory.md",
-    "extracts/EXTRACT_2026-05-20_env-launch-skill-execution.md",
-    "extracts",
-    "audits/AUDIT_2026-05-23_phase2-n8n-pipeline.md.tmp.7140.20244b08d44a",
-    "audits/AUDIT_2026-05-23_phase2-n8n-pipeline.md",
-    "prompts/session-extractor-prompt.md",
-    "prompts/session-extractor-prompt.md.tmp.7140.941aee8d9c7f",
-    "audits/AUDIT_2026-05-23_phase1-complete.md"
+    "extracts"
   ]
 }
