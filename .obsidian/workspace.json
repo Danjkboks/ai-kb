@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 288.50052642822266
   },
   "right": {
     "id": "8b0c3d1c43cd701e",
@@ -176,7 +176,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -190,7 +191,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8efdb8698a7f339d",
+  "active": "left",
   "lastOpenFiles": [
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md.tmp.22728.4ad96baf93b8",
     "audits/AUDIT_2026-06-05_watcher-scheduled-twice-daily.md",
