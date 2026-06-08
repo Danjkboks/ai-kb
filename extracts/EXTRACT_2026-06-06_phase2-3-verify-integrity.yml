@@ -1,0 +1,88 @@
+type: extract
+date: 2026-06-06
+slug: phase2-3-verify-integrity
+surface: claude-code
+duration_min: 60
+
+task:
+  type: new-build
+  complexity: medium
+  planned: true
+  pivots: 0
+
+tasks:
+  total: 7
+  pass: 7
+  fail: 0
+
+files_modified:
+  - path: ".claude/settings.json"
+    change: "updated"
+  - path: "scripts/verify-runner.ps1"
+    change: "created"
+  - path: ".claude/commands/wrap.md"
+    change: "updated"
+  - path: ".claude/commands/integrity.md"
+    change: "created"
+  - path: "knowledge/audits/INTEGRITY_2026-06-06.yml"
+    change: "created"
+  - path: "knowledge/audits/VERIFY_LOG.yml"
+    change: "created"
+  - path: "knowledge/audits/VERIFY_2026-06-06_smoke-test.ps1"
+    change: "created"
+
+decisions:
+  - what: "SessionEnd hook uses nested {hooks:[...]} format verbatim from BUILD_PLAN spec"
+    why: "Claude Code hook schema requires outer array of hook-groups, each with inner hooks array"
+  - what: "verify-runner.ps1 parses structured 'TESTS: N run N passed' output contract"
+    why: "structured first-line output lets runner extract counts without fragile regex across arbitrary output"
+  - what: "VERIFY script uses [Parser]::ParseFile() for PS syntax checks"
+    why: "in-process parse -- no subprocess spawn, no exit-code ambiguity"
+  - what: "/audit efficiency reminder not re-added (already present from Phase 1)"
+    why: "fields were verbatim in audit.md lines 99-101 -- re-adding would duplicate"
+  - what: "integrity test ran against EXTRACT_ARCHIVE (36 sessions) as primary data source"
+    why: "only YAML data available; archive digest is dense enough to yield real findings"
+
+approach:
+  steps_taken: 16
+  retries:
+    - what: "Bash -Command @'...'@ multiline PS to write smoke-test VERIFY file"
+      attempts: 1
+      fix: "used Write tool directly -- Bash cannot execute PS here-string delimiters"
+  redundant_steps:
+    - "BUILD_PLAN read in two passes (lines 1-267 + offset 268) -- single full read at session start would have been faster"
+  better_approach: "Read BUILD_PLAN in one pass at session start; smoke-test file written to a temp path then deleted rather than left in audits/"
+
+efficiency:
+  tokens_per_task: low
+  bottleneck: "Bash @'...'@ PS invocation failure -- known pitfall, CLAUDE.md rule exists, still triggered"
+  tokens_input_k: 85
+  tokens_output_k: 18
+
+errors:
+  - what: "Bash tool: @'...'@ PS here-string delimiter treated as shell syntax, exit 2"
+    fix: "switched to Write tool to create the file directly"
+    status: resolved
+
+env_friction:
+  - domain: powershell
+    issue: "Bash tool cannot pass @'...'@ PS here-string delimiters -- treated as shell syntax"
+    fix: "Write tool for any multi-line PS content; never attempt inline PS heredoc via Bash"
+    status: resolved
+
+patterns:
+  good:
+    - "Read BUILD_PLAN spec exactly before implementing -- zero spec deviations across both phases"
+    - "Smoke test immediately after verify-runner.ps1 creation -- clean VERIFY_LOG.yml entry confirmed end-to-end"
+    - "settings.json + verify-runner.ps1 written in parallel (no dependency between Task 1 and Task 2)"
+    - "integrity analysis ran actual 5-step reasoning loop against real data before writing YAML"
+  bad:
+    - "Attempted Bash @'...'@ PS heredoc -- same failure mode documented in CLAUDE.md Pitfalls; still triggered"
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates:
+  - "INTEGRITY_2026-06-06.yml F01 + F02 findings: add pydantic-core pin + docker exec double-slash to CLAUDE.md Pitfalls"
+
+next_session: "Phase 2 + Phase 3 fully complete; apply INTEGRITY F01 (pydantic-core pin) + F02 (docker exec double-slash) to CLAUDE.md Pitfalls; smoke-test VERIFY_2026-06-06_smoke-test.ps1 in knowledge/audits/ is a test artifact"
+verify_script: "knowledge/audits/VERIFY_2026-06-06_phase2-3-verify-integrity.ps1"

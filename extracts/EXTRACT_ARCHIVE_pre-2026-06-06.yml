@@ -1,0 +1,337 @@
+type: extract
+date: 2026-06-06
+slug: archive-digest-pre-cutoff
+surface: mixed
+note: "Consolidated digest of all sessions before YAML format migration (36 extracts + 8 audits archived to knowledge/archive/)"
+
+sessions:
+
+  - slug: memory-context-strategy-implementation
+    date: 2026-05-18
+    surface: claude-code
+    summary: "Designed routing-based agent system, model selection framework, Agent Security Framework, Memory Architect agent; built 17 files including MANIFEST.md files and scheduling scripts"
+    decisions: ["routing.json + agent manifests over full CLAUDE.md for 51% context reduction", "single Memory Architect agent over separate agents", "hybrid Windows Task Scheduler + Claude Code scheduling"]
+    errors: ["PowerShell TerminatorExpectedAtEndOfString in export-sessions.ps1: fixed encoding", "Windows Task Scheduler requires admin: user ran manually"]
+    patterns_good: ["file structure > verbose docs for token efficiency (51% reduction proven)", "executable scripts replace prose explanations", "model selection framework prevents wrong-model waste"]
+    patterns_bad: ["repeated web searches for same concepts", "multiple model switches in same reasoning chain"]
+    env_friction: [{domain: powershell, issue: "PS5.1 encoding bug on French Windows", fix: "ASCII-only strings"}]
+    next_session: "Memory Architect deployed but Windows Task Scheduler needs manual admin setup; 3 Claude scheduled tasks active"
+
+  - slug: memory-architect-system-deployment
+    date: 2026-05-18
+    surface: claude-code
+    summary: "Duplicate extract from same source session as memory-context-strategy-implementation -- same deliverables, different extraction run"
+    decisions: ["same as memory-context-strategy-implementation"]
+    errors: ["PowerShell TerminatorExpectedAtEndOfString: fixed", "Task Scheduler elevation: manual workaround"]
+    patterns_good: ["agent manifest 5-part structure: Purpose/Triggers/Dependencies/Example/Limits", "append-only audit log for security compliance"]
+    patterns_bad: ["repeated directory structure checks with different tools", "multiple web searches for similar concepts"]
+    env_friction: []
+    next_session: "Memory Architect DEPLOYED, Windows Task Scheduler needs manual admin setup"
+
+  - slug: wiki-reorganization-agent-routable-structure
+    date: 2026-05-19
+    surface: claude-code
+    summary: "Reorganized wiki with semantic prefix naming (sop_/guide_/runbook_/reference_), agent-routable directories, YAML frontmatter on all files, central INDEX.md; moved 16 old files to archive"
+    decisions: ["semantic prefix naming for agent discovery", "flat hierarchy with prefixes over deep nested", "YAML frontmatter for machine-readable metadata"]
+    errors: ["Bash mv failed: PowerShell required, used Move-Item -ErrorAction SilentlyContinue", "directory names with spaces: quoted paths"]
+    patterns_good: ["agent-first documentation requires semantic naming AND directory structure", "flat hierarchy with prefixes more agent-friendly than deep nesting"]
+    patterns_bad: ["repeated reading of same file contents during reorganization"]
+    env_friction: [{domain: powershell, issue: "bash mv not available in PS environment", fix: "use Move-Item"}]
+    next_session: "Wiki at D:\\lab\\wiki\\ reorganized; INDEX.md is central discovery map; infra/ empty, needs Cloudflare docs"
+
+  - slug: n8n-workflow-complexity-assessment
+    date: 2026-05-19
+    surface: claude-code
+    summary: "Read memory files to understand project state; assessed complexity of planned n8n workflow (schedule+research+email); no files created -- planning session only"
+    decisions: ["Claude Sonnet 4.6 over Haiku for n8n workflow: deeper reasoning needed for research synthesis", "48-hour schedule trigger: balances freshness with resource usage"]
+    errors: []
+    patterns_good: ["memory files follow consistent structure with originSessionId tracking", "budget constraint (50EUR/month) drives OpenRouter-only decision"]
+    patterns_bad: ["repeated reading of same memory file structure", "detailed analysis of already-completed system"]
+    env_friction: []
+    next_session: "Stack operational: n8n 5678, LLMLingua 5001, Qdrant 6333, Langfuse 3000; workflow-status+AI-research digest workflow still unbuilt"
+
+  - slug: workflow-lab-env-launch-test
+    date: 2026-05-20
+    surface: claude-code
+    summary: "Executed env-launch skill; diagnosed Cloudflare tunnel certificate error; updated SESSION_SNAPSHOT.md"
+    decisions: ["parallel tool calls for env-launch (Bash script + memory reads) not sequential"]
+    errors: ["Cloudflare tunnel: no file cert specify origin certificate path -- needs cloudflared tunnel login"]
+    patterns_good: ["parallel tool calls critical for env-launch: 2-30s script + free memory reads must not serialize", "SkipTunnel flag when cert broken"]
+    patterns_bad: []
+    env_friction: [{domain: docker, issue: "Cloudflare tunnel cert error on every restart", fix: "cloudflared tunnel login"}]
+    next_session: "Tunnel cert broken; local services 5678/5001/6333/3000 usable; env-launch uses parallel tool calls"
+
+  - slug: docker-crash-restart-workflow-lab
+    date: 2026-05-20
+    surface: claude-code
+    summary: "Docker Desktop crashed with socket path corruption; reset to factory defaults via computer-use MCP; restarted all 5 containers via env-launch.ps1"
+    decisions: ["factory reset over troubleshooting specific Docker corruption"]
+    errors: ["Docker socket path corruption: factory reset resolved", "Cloudflare cert.pem error: ongoing", "wrong python script path: used SESSION_SNAPSHOT.md instead"]
+    patterns_good: ["Docker socket corruption on Windows requires factory reset via UI", "env-launch.ps1 is primary startup script"]
+    patterns_bad: ["repeatedly reading SESSION_SNAPSHOT.md without new info", "multiple attempts to run python script with wrong path"]
+    env_friction: [{domain: docker, issue: "Docker Desktop socket path corruption on Windows", fix: "factory reset via UI"}]
+    next_session: "Docker reset to factory defaults -- custom configs lost; Cloudflare tunnel still broken; core services running"
+
+  - slug: env-launch-skill-execution
+    date: 2026-05-20
+    surface: claude-code
+    summary: "Routine env-launch skill execution; stack started successfully; Cloudflare tunnel failed again (same cert error)"
+    decisions: ["parallel tool calls for env-launch execution"]
+    errors: ["Cloudflare tunnel: missing origin cert -- user must run cloudflared tunnel login"]
+    patterns_good: ["env-launch parallel execution: Bash script + Read tools in single message", "Read Memory First pattern avoids redundant token costs"]
+    patterns_bad: []
+    env_friction: [{domain: docker, issue: "Cloudflare tunnel cert missing on restart", fix: "cloudflared tunnel login (manual)"}]
+    next_session: "Tunnel cert broken; local services running; env-launch takes ~20s; SkipTunnel flag available"
+
+  - slug: memory-sync-and-session-wrap-up
+    date: 2026-05-21
+    surface: claude-code
+    summary: "Discovery session -- no deliverables; tried to find prior session transcripts; found knowledge/INDEX.md and agent manifests but no concrete work done"
+    decisions: []
+    errors: ["transcript search returned no matches for prior session"]
+    patterns_good: []
+    patterns_bad: ["repeated tool searches for same session transcripts", "multiple glob searches for same directory", "redundant session management tool calls"]
+    env_friction: []
+    next_session: "Last session was in D:\\Claudi not D:\\aidirectory -- different project context; 7 agent MANIFESTs exist"
+
+  - slug: memory-system-audit-session-context
+    date: 2026-05-21
+    surface: claude-code
+    summary: "Established session directory context (aidirectory vs Claudi); identified MCP session management tools as better than direct file search for session lookup"
+    decisions: ["use MCP session management tools over direct file system for transcript search"]
+    errors: ["search for 'working directory cwd project' returned nothing: changed to 'agent skill inventory Claude Code'"]
+    patterns_good: ["MCP session management provides better search than direct file queries", "session search requires specific query terms"]
+    patterns_bad: ["multiple session search attempts before finding relevant results", "repeated directory checks for files that don't exist"]
+    env_friction: []
+    next_session: "Last session was in D:\\Claudi; current is D:\\aidirectory; use mcp_ccd_session_mgmt with specific query terms"
+
+  - slug: phase1-task1-directory-setup
+    date: 2026-05-23
+    surface: claude-code
+    summary: "Created data/ tree (sessions, queue, pending, done, audits, proposals) and knowledge/extracts, skills subdirs; created .gitignore; confirmed D:\\aidirectory is NOT a git repo (only knowledge/ is)"
+    decisions: ["data/ in .gitignore: raw operational data not tracked", "D:\\aidirectory root not a git repo: knowledge/ is the vault"]
+    errors: ["Bash tool Exit 127 on New-Item: switched to mkdir -p with WSL paths"]
+    patterns_good: []
+    patterns_bad: ["multiple attempts with different command syntaxes for same directory creation"]
+    env_friction: [{domain: windows-wsl2, issue: "Bash tool requires WSL paths not Windows paths, New-Item fails with exit 127", fix: "use mkdir -p /mnt/d/..."}]
+    next_session: "D:\\aidirectory is NOT git repo; knowledge/ IS; Bash tool requires WSL paths; .gitignore excludes data/"
+
+  - slug: copy-session-jsonl-files-to-data-directory
+    date: 2026-05-23
+    surface: claude-code
+    summary: "Copied 12 JSONL session files from workflow-lab sessions-archive to data/sessions/ using PS script file to avoid inline PowerShell variable stripping"
+    decisions: ["write PS to .ps1 file and invoke with -File to avoid Bash tool variable stripping"]
+    errors: ["MissingVariableNameAfterForeach in inline PS: write to .ps1 file and use -File", "French locale PS error messages: parse error codes not text"]
+    patterns_good: ["write PS to file, invoke with -File -- reliable for any complex PS logic"]
+    patterns_bad: ["multiple attempts with same inline PS syntax before switching approach"]
+    env_friction: [{domain: powershell, issue: "Bash tool strips $variable names in inline PS commands", fix: "write to .ps1 file and invoke with -File"}]
+    next_session: "12 JSONL files now in data/sessions/; PowerShell inline commands strip $ variables -- always use script files"
+
+  - slug: copy-session-archive-files-to-data-directory
+    date: 2026-05-23
+    surface: claude-code
+    summary: "Duplicate extract of same source session as copy-session-jsonl; confirmed PS-to-file pattern for foreach loops"
+    decisions: ["same as copy-session-jsonl"]
+    errors: ["same PowerShell variable stripping error: same fix applied"]
+    patterns_good: ["PS variable stripping in Bash tool is consistent failure -- script file approach always needed"]
+    patterns_bad: ["re-reading error messages multiple times without adapting approach initially"]
+    env_friction: [{domain: powershell, issue: "inline PS variable stripping in Bash tool", fix: "write .ps1 + invoke with -File"}]
+    next_session: "JSONL files copied to data/sessions/; use powershell.exe -NoProfile -ExecutionPolicy Bypass -File for reliable execution"
+
+  - slug: phase1-complete
+    date: 2026-05-23
+    surface: claude-code
+    summary: "Executed all 6 Phase 1 tasks: data/ tree, knowledge/ git init + GitHub push, Obsidian Git plugin, export-sessions.ps1 fix, session-audit.ps1, AUDIT_TEMPLATE.md, /audit + /wrap commands, CLAUDE.md update, scheduled task"
+    decisions: ["knowledge/ git repo only (not root): natural Obsidian sync unit", "/audit -> knowledge/audits (tracked), /wrap -> data/queue/pending (untracked)", "Bash tool gets pwsh.exe wrapper for all Windows-native commands"]
+    errors: ["WSL bash mkdir only creates in WSL: use New-Item via powershell.exe", "em-dash in .ps1 breaks PS5.1 French Windows (E2 80 94 -> 0x94): replaced with ASCII hyphen", "schtasks access denied from Bash: user ran elevated manually"]
+    patterns_good: ["parallel tool calls for all independent operations", "read-before-edit caught every stale path and encoding issue", "exact copy-paste PS blocks for user-run elevated steps"]
+    patterns_bad: ["Cowork for Windows sysadmin: encoding + elevation makes it unreliable", "WSL bash for Windows filesystem: always use powershell.exe New-Item"]
+    env_friction: [{domain: powershell, issue: "em-dash in PS5.1 on French Windows breaks tokenizer", fix: "ASCII hyphen only -- never non-ASCII in .ps1"}, {domain: windows-wsl2, issue: "WSL mkdir creates in WSL not Windows", fix: "use powershell.exe -Command New-Item"}]
+    next_session: "Phase 1 complete; NEVER em-dash/non-ASCII in .ps1; NEVER bash mkdir for Windows paths; knowledge/ syncs to ai-kb every 10min"
+
+  - slug: phase2-n8n-pipeline
+    date: 2026-05-23
+    surface: claude-code
+    summary: "Built Phase 2 pipeline: session-watcher.ps1, /compress Flask endpoint on LLMLingua, n8n workflow session-knowledge-extractor (13 nodes, id 7l8aP0slan6tRkMy), end-to-end verified with real GitHub commit"
+    decisions: ["fetch system prompt from GitHub raw (not inline): avoids 7KB JSON escaping", "dedicated HTTP Request node for HTTP in n8n (Code node has no fetch/$helpers)", "LLMLingua via host.docker.internal:5001 (separate Docker networks)"]
+    errors: ["POST /workflows 400: active field rejected -- activate via separate endpoint", "POST /activate 415: needs Content-Type + {} body", "HTTP nodes empty body: wrong param contentType not specifyBody", "Code node fetch not defined: use HTTP Request node", "DeepSeek 400 JSON parsing: specifyBody raw mangles body -- use specifyBody json", "GitHub 401->403: PAT lacked Contents:write -- new fine-grained PAT needed"]
+    patterns_good: ["diagnose via GET /api/v1/executions/{id}?includeData=true", "direct GitHub API write-probe before re-running full pipeline", "reason to root cause instead of node-by-node bisection"]
+    patterns_bad: ["building workflow JSON via PowerShell here-string: $ interpolation -> 0-char file; use Write tool with hand-authored JSON", "guessing n8n Code-node HTTP helper names -- two wasted iterations"]
+    env_friction: [{domain: n8n, issue: "n8n public API rejects active field on POST /workflows", fix: "remove active, use separate activate endpoint"}, {domain: docker, issue: "separate Docker networks require host.docker.internal", fix: "use host.docker.internal:5001"}]
+    next_session: "Workflow 7l8aP0slan6tRkMy ACTIVE at localhost:5678/webhook/session-ingest; /compress baked into image -- rebuild from D:\\lab\\workflow-lab\\agents\\ if recreated"
+
+  - slug: index-wikilinks-extract-links
+    date: 2026-05-24
+    surface: claude-code
+    summary: "Fixed _INDEX.md wikilinks; stripped all inline secrets from n8n workflow; migrated GitHub credential to n8n credential store; verified end-to-end (exec 36 success)"
+    decisions: ["GET-edit-PUT live workflow not wholesale PUT: local had secrets, would clobber migration", "new credential vs edit in place: n8n API has no credential update endpoint", "Fetch System Prompt no auth: public raw URL"]
+    errors: ["PUT 400 settings additional properties: trim to executionOrder:v1", "ECONNRESET at DeepSeek: transient, retried OK", "GitHub 401 after stripping inline auth: referenced credential was invalid; created working credential"]
+    patterns_good: ["GET-first before every PUT", "real webhook runs as only reliable credential test", "distinguish 401 (auth) from ECONNRESET (network)"]
+    patterns_bad: ["trusting 'credentials migrated' without live run -- invalid cred referenced but not working", "inline heredocs for escape-heavy code on Windows/Git Bash"]
+    env_friction: [{domain: n8n, issue: "n8n PUT only accepts name/nodes/connections/settings (executionOrder only)", fix: "trim settings body before PUT"}]
+    next_session: "Workflow fully secret-free and verified; DeepSeek hallucinates extract date from content not system clock; n8n API no credential update endpoint (create/delete only)"
+
+  - slug: memory-rag-architecture-build
+    date: 2026-05-24
+    surface: chat
+    summary: "Full audit of D:\\aidirectory memory+RAG architecture; designed+built Phase 1 and Phase 2; installed pwsh.exe; drained 21 session queue; hardened credentials"
+    decisions: ["DeepSeek V3.2 over Kimi K2 for batch: output tokens 9x cheaper", "data/ local only / knowledge/ git-tracked -> ai-kb -> Obsidian", "pwsh.exe for all future scripts: fixes French Windows encoding issues"]
+    errors: ["export-sessions.ps1 wrong ProjectId: fixed", "n8n API POST rejects active field: fixed", "HTTP nodes empty body: specifyBody not contentType", "Code node no fetch: HTTP Request node", "DeepSeek 400 JSON: specifyBody json not raw", "GitHub 401->403: new fine-grained PAT"]
+    patterns_good: ["reading HANDOVER.md + MEMORY.md + CLAUDE.md before each session prevents wrong-direction work", "two-environment mental model (Desktop vs Workflow Lab) kept scope clean"]
+    patterns_bad: ["building n8n workflow JSON via PS here-string with JS: $ interpolation corrupts file", "assuming Obsidian Git was installed -- it wasn't", "assuming knowledge/ was git-tracked -- it wasn't"]
+    env_friction: [{domain: powershell, issue: "PS5.1 French Windows em-dash breaks tokenizer", fix: "use pwsh.exe for all future scripts"}]
+    next_session: "Phase 1 + Phase 2 live; session-watcher.ps1 written but NOT yet scheduled; DeepSeek hallucinates dates"
+
+  - slug: itsm-evsm-document-clarification
+    date: 2026-05-27
+    surface: claude-code
+    summary: "Created itsm_evsm_v4_0.html: simplified ITSM/EVSM document for non-technical readers by removing symbols, adding French explanations, simplifying lifecycle states, adding Key Figures section"
+    decisions: ["keep technical names but add plain French explanations in gray text", "replace ON_ENTER formulations with plain French", "preserve navigation arrows (->), remove badges (CONSISTENT/SPLIT/FUSION)"]
+    errors: []
+    patterns_good: ["document simplification: keep technical identifiers + add plain language explanations", "remove parasitic symbols while preserving visual navigation"]
+    patterns_bad: []
+    env_friction: []
+    next_session: "v4.0 at aidirectory/ITSM/itsm_evsm_v4_0.html; technical names preserved with gray explanations"
+
+  - slug: bootstrap-project-initializer
+    date: 2026-05-28
+    surface: claude-code
+    summary: "Designed project bootstrap pattern with CLAUDE.md + HANDOVER.md templates and surface routing table (Chat/Cowork/Code); no files created -- design session"
+    decisions: ["3-section HANDOVER.md architecture (CHAT/COWORK/CODE + SHARED) for all new projects", "never create new agent if existing D:\\aidirectory\\agents\\ one covers use case"]
+    errors: []
+    patterns_good: ["surface routing: Chat for ideation, Code for implementation, Cowork for artifacts", "bootstrap creates CLAUDE.md + HANDOVER.md stub + PowerShell folder creation"]
+    patterns_bad: []
+    env_friction: []
+    next_session: "Bootstrap pattern: Type/Duration/Surface routing table + stack definition; HANDOVER.md 3-section architecture enforced"
+
+  - slug: container-audit-dify-stack
+    date: 2026-05-28
+    surface: claude-code
+    summary: "Container audit: identified agent-llmlingua at 1260%+ CPU (runaway); identified Dify stack (10 containers, 1.5GB RAM) as non-core and overlapping with n8n+OpenRouter+LLMLingua; decision pending to stop Dify"
+    decisions: ["Dify stack identified as unused and competing with core stack; stop to free ports 80/443 and 1.5GB RAM"]
+    errors: ["docker stats interrupted with 760 error: monitoring command, no fix needed"]
+    patterns_good: ["container audit pattern: docker ps for inventory, docker stats for resources, docker logs for diagnostics"]
+    patterns_bad: ["repeated full container listing in tool output"]
+    env_friction: [{domain: docker, issue: "agent-llmlingua at 1260% CPU from retry storm + oversized inputs", fix: "pending -- separate sessions fixed this"}]
+    next_session: "Dify stack (80/443) blocks Cloudflare tunnel; agent-llmlingua CPU spike -- check docker logs; core stack: 5678/5001/6333/3000"
+
+  - slug: session-watcher-ps1-state-verification
+    date: 2026-05-28
+    surface: claude-code
+    summary: "Verified session-watcher.ps1 state: polling loop (not FileSystemWatcher), webhook config, n8n connectivity; scheduled task 'aidirectory-session-watcher' had error code 2147942402"
+    decisions: ["polling loop over FileSystemWatcher: PS5.1 event action blocks lose variable scope"]
+    errors: ["Get-ScheduledTask not available in PS5.1: use schtasks.exe", "aidirectory-session-watcher task had error code 2147942402: misconfigured"]
+    patterns_good: ["PS5.1 polling loop reliable alternative to FileSystemWatcher for variable scoping"]
+    patterns_bad: ["re-read HANDOVER.md without specific need", "repeated file existence checks for same file"]
+    env_friction: [{domain: powershell, issue: "PS5.1 lacks Get-ScheduledTask cmdlet", fix: "use schtasks.exe query"}]
+    next_session: "session-watcher.ps1 at D:\\aidirectory\\scripts\\; uses 2s polling; scheduled task may be misconfigured"
+
+  - slug: phase1-factory-hardening-watcher-ps1-update
+    date: 2026-05-28
+    surface: claude-code
+    summary: "Updated HANDOVER.md to 3-section architecture; updated scheduled task to use version-pinned pwsh.exe path; 26 backlog files drained; 3 synthetic test sessions PASS"
+    decisions: ["pwsh.exe path pinned to WindowsApps Store version 7.6.2.0 for scheduled task", "HANDOVER.md 3-section architecture with merge-overwrite rule enforced"]
+    errors: ["GitHub commit 422 on re-run: no idempotency guard", "DeepSeek hallucinates extract date: need system clock injection", "Cloudflare tunnel URL changes on restart: known fragility"]
+    patterns_good: []
+    patterns_bad: ["repeated reading of HANDOVER.md multiple times in same session", "re-stating same pipeline fragilities multiple times"]
+    env_friction: [{domain: windows-wsl2, issue: "scheduled task pwsh path version-pinned to WindowsApps Store install", fix: "re-run _register-watcher-task.ps1 elevated after PS upgrades"}]
+    next_session: "Watcher task uses WindowsApps pwsh 7.6.2.0 path; watcher verified PASS; GitHub 422 on re-run not fixed; DeepSeek date hallucination not fixed"
+
+  - slug: llmlingua-oom-watcher-diagnosis
+    date: 2026-06-05
+    surface: chat
+    summary: "Diagnosed cascade failure: watcher retry storm (144 retries for 6 files in 9min) + LLMLingua OOM (1.4M tokens, 2300% CPU, gunicorn SIGKILL loop) -- designed Fix 1 (watcher backoff) and Fix 2 (input size guard)"
+    decisions: ["Fix 1: per-file retry tracking + exponential backoff + skip after N failures", "Fix 2: MAX_INPUT_CHARS=100K guard in Flask /compress -- truncate not reject"]
+    errors: ["LLMLingua WORKER TIMEOUT crash loop: self-resolved after 14min; ongoing during session"]
+    patterns_good: ["watcher log + n8n Executions tab together trace full cascade", "Docker Desktop CPU spike visibility catches runaway containers"]
+    patterns_bad: ["watcher retry-on-every-poll catastrophic when downstream is down", "raw .jsonl files straight to LLMLingua: too large, no guard"]
+    env_friction: [{domain: docker, issue: "LLMLingua 2300% CPU from oversized inputs", fix: "input size guard + retry backoff -- implemented in next session"}]
+    next_session: "Fix 1 + Fix 2 are active Code tasks; LLMLingua currently idle/stable; 3-file reappear bug not yet investigated"
+
+  - slug: watcher-retry-llmlingua-guard
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Patched session-watcher.ps1 with per-file retry/backoff/skip + locale-proof conn-refused detection; patched LLMLingua /compress with MAX_INPUT_CHARS=100K guard; docker cp + restart (no rebuild)"
+    decisions: ["truncate not reject oversize /compress input: partial compression beats OOM", "watcher SKIP state in-memory only: task restart naturally retries", "conn-refused by SocketErrorCode enum + multilingual regex (locale-proof)"]
+    errors: ["conn-refused regex English-only: French Windows has 'refusee' not 'refused' -- PAUSE branch never fired; fixed with SocketErrorCode + 'refus' stem + 10061", "docker exec /app path mangled by Git Bash MSYS: use sh -c '//app/...' double-slash"]
+    patterns_good: ["fix -> launch Agent with explicit mock-test checklist -> patch findings caught locale bug static review missed", "docker cp + restart faster than rebuild for single-file Python changes"]
+    patterns_bad: ["trusting English-only string matching on .NET exceptions on French Windows", "assuming D:\\aidirectory\\projects\\workflow-lab\\agents\\ was LLMLingua build context: it's D:\\lab\\workflow-lab\\agents\\"]
+    env_friction: [{domain: powershell, issue: "French Windows .NET exception strings break English regex matching", fix: "use SocketErrorCode enum + multilingual regex stems"}, {domain: docker, issue: "MSYS2 path mangling in docker exec", fix: "use double-slash //app/ form"}]
+    next_session: "LLMLingua build context is D:\\lab\\workflow-lab\\agents\\ (NOT projects\\ copy -- stale); watcher scheduled task must be Stop/Start'd to load new code"
+
+  - slug: extractor-pipeline-rebuild-local-no-github
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Replaced GitHub node with Write Binary File in n8n workflow; added Docker volume mount; fixed N8N_RESTRICT_FILE_ACCESS_TO; fixed DeepSeek date hallucination; fixed truncation to head+tail; added watcher dedup via sent-files.log; registered n8n-instance MCP"
+    decisions: ["local write via readWriteFile (writeBinaryFile deprecated in n8n 2.23)", "MCP over REST for workflow edits: no N8N_API_KEY existed", "MCP on localhost not Cloudflare tunnel: stable across URL rotation", "head+tail truncation (50K+50K) to preserve session end decisions"]
+    errors: ["claude mcp add not on PATH: edited ~/.claude.json directly via Python", "Write Extract To Disk 'file not writable' (exec 382): n8n 2.23 needs N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge", "inline PS through bash mangled by French locale: write .ps1 to disk + -File"]
+    patterns_good: ["n8n MCP update_workflow atomic 8-op batch: clean, no broken intermediate state", ".ps1-to-disk pattern sidesteps all bash<->PS quoting failures", "smoke test synthetic JSONL -> webhook -> poll vault catches writability bug immediately"]
+    patterns_bad: ["inline PowerShell in Bash broken every time on French locale: never again", "assuming volume mount alone sufficient for n8n file writes: wrong, N8N_RESTRICT_FILE_ACCESS_TO is second gate"]
+    env_friction: [{domain: n8n, issue: "n8n 2.23 blocks file writes outside /data without N8N_RESTRICT_FILE_ACCESS_TO", fix: "add N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge to docker-compose"}, {domain: powershell, issue: "French locale inline PS through Bash mangled -f operator and extglob", fix: "write .ps1 to disk and invoke with -File always"}]
+    next_session: "Extractor fully local, no GitHub; N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge required in compose; n8n MCP at localhost:5678; watcher uses sent-files.log for dedup"
+
+  - slug: extractor-local-rebuild-watcher-scheduled
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Extended local extractor rebuild session; converted session-watcher from always-on loop to twice-daily scheduled one-shot (09:00+18:00) with Yes/No popup; registered n8n-instance MCP; ran /audit and /session-review (audit agent verified 8/8 tasks)"
+    decisions: ["popup timeout -> SKIP (not run): busy user intent", "daily 09:00+18:00: natural end-of-morning and end-of-workday cadence", "COM WScript.Shell popup: no external dependency, simple Yes/No/timeout"]
+    errors: ["task re-registration denied without elevation: used Start-Process -Verb RunAs", "'file is not writable' on Write Extract To Disk: n8n 2.23 file-access guard (same as previous session)"]
+    patterns_good: ["do/while(-not $Once): clean one-shot pattern without restructuring loop", "Start-Process -Verb RunAs -Wait: reliable elevation from non-admin shell", "independent audit agent surfaced real bugs including watcher racing tests"]
+    patterns_bad: []
+    env_friction: [{domain: windows-wsl2, issue: "task registration requires elevation from non-admin", fix: "Start-Process -Verb RunAs -Wait"}]
+    next_session: "Watcher now SCHEDULED twice-daily (not always-on); popup timeout=SKIP; task uses WindowsApps pwsh 7.6.2.0 -- re-register after PS upgrade"
+
+  - slug: watcher-scheduled-twice-daily
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Audit-only: added -Once/-Prompt/-PromptTimeoutSec flags to session-watcher.ps1; changed _register-watcher-task.ps1 to two daily triggers (09:00+18:00); verified with independent audit agent"
+    decisions: ["COM WScript.Shell popup for Yes/No gate", "popup timeout=SKIP not run: user intent to not drain CPU", "09:00+18:00 daily triggers"]
+    errors: ["task re-registration denied without elevation: Start-Process -Verb RunAs used"]
+    patterns_good: ["audit agent: verified 8/8 tasks, mock-tested 3 sessions", "do/while(-not $Once) pattern for one-shot loop"]
+    patterns_bad: []
+    env_friction: []
+    next_session: "Watcher is scheduled (09:00+18:00), not always-on; popup on; WindowsApps pwsh path still version-pinned"
+
+  - slug: phase3-retrieval-qdrant-extracts
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Built Qdrant indexer (353 chunks from 34 extracts), search CLI, /search command, reindex-extracts.ps1, daily reindex scheduled task (08:00); fixed pydantic-core pin, qdrant-client .query_points() API change"
+    decisions: ["query_points() over search(): search() removed in current qdrant-client", "deterministic MD5 point IDs: idempotent re-runs", "frontmatter delimiter search scoped to first 2KB: prevents body --- from truncating YAML early", "batch upsert at 200 points", "UTF-8 stdout reconfigure: Windows cp1252 crashes on arrow characters"]
+    errors: ["pydantic-core 2.47.0 incompatible with pydantic 2.13.4: pin to pydantic-core==2.46.4", "transformers version rejected tokenizers: pip install --upgrade", "qdrant_client.search() AttributeError: use query_points()", "UnicodeEncodeError on arrow chars: sys.stdout.reconfigure(encoding='utf-8')", "slug fallback used full filename not parsed slug: re.sub to strip prefix; required collection recreate", "RTK hook broke all Bash calls: MSYS2 mangled /home paths to Scoop git root"]
+    patterns_good: ["iterative smoke-test pattern: run, check error, fix, re-run", "collection recreate + clean reindex faster than deleting individual bad points", "7-test mock protocol for CLI utility scripts", "MSYS_NO_PATHCONV=1 prefix for WSL binary calls"]
+    patterns_bad: ["wiring RTK hook via wsl -e bash: MSYS2 path mangling is fundamental -- cannot hook Windows Claude Code via POSIX path", "running PS with $variables via -Command in bash: bash expands $var before pwsh sees it"]
+    env_friction: [{domain: python, issue: "pydantic-core version incompatibility", fix: "pin pydantic-core==2.46.4"}, {domain: windows-wsl2, issue: "RTK hook MSYS2 path mangling breaks all Bash calls", fix: "fixed in next session via bash -l login shell"}, {domain: qdrant, issue: "qdrant-client .search() removed", fix: "use .query_points()"}]
+    next_session: "353 chunks indexed, /search working, daily reindex 08:00; RTK hook removed from Windows settings (MSYS2 fundamental issue); pydantic-core must be 2.46.4"
+
+  - slug: pattern-mining-review-cmd
+    date: 2026-06-05
+    surface: claude-code
+    summary: "Built mine_patterns.py (topic-based keyword clustering across 34 extracts+8 audits, 14 patterns output to proposals); built /review command; dog-food review caught 2 real bugs"
+    decisions: ["topic-based keyword clustering over exact string normalisation: same topic phrased differently per session", "scan both extracts and audits: audits have higher-signal What-Didnt-Work sections", "slug dedup across extract+audit pairs: count each session once", "CLAUDE.md hard stop: proposals to data/proposals/ for human review, not auto-applied"]
+    errors: ["parse_frontmatter always returned {}: files start with --- not ---\\n; fixed by prepending \\n before split", "extracts use slug: not session_id:: added meta.get('slug') fallback", "built-in review skill intercepted /review: executed manually by following .md steps"]
+    patterns_good: ["dog-fooding /review on files just written: caught 2 real bugs (frontmatter parse, slug key fallback)", "reading sample extracts before writing script: confirmed real section names vs assumed", "topic-based clustering immediately yielded results where exact-match produced zero"]
+    patterns_bad: ["first approach (exact normalised string match) produced 0 patterns: full redesign needed", "built-in review skill shadows .claude/commands/review.md -- skill takes precedence"]
+    env_friction: []
+    next_session: "mine_patterns.py IS the skill pipeline; /review must be executed manually (skill collision); 14 patterns in data/proposals/claude-md-additions.md awaiting human review"
+
+  - slug: claude-md-rules-rtk-hook-fix
+    date: 2026-06-06
+    surface: claude-code
+    summary: "Applied 11 approved rules to CLAUDE.md (1 NEVER + 10 Pitfalls); renamed review.md -> session-review.md; fixed RTK hook via wsl -d Ubuntu bash -l -c pattern; added docker/git/n8n RTK filters"
+    decisions: ["RTK wrapper uses bash -l login shell: MSYS2 mangles POSIX paths but login shell finds rtk via PATH", "RTK filters use plain prefix match without word boundary: avoids TOML escape complexity", "[filters.n8n] matches ^mcp__n8n to cover all n8n MCP tool names", "Pitfalls as own CLAUDE.md section for scan speed"]
+    errors: ["RTK filters: Python \\\\b in heredoc produced U+0008 backspace not regex \\b: dropped word boundary", "RTK MSYS2 mangling: MSYS_NO_PATHCONV=1 still fails -- MSYS2 converts args at bash eval time before env var applies", "broken RTK hook blocked ALL Bash tool calls: required non-Bash tools to diagnose and fix"]
+    patterns_good: ["wsl -d Ubuntu bash -l -c 'rtk hook claude': login shell picks up ~/.local/bin in PATH", "Edit tool for targeted CLAUDE.md changes without rewriting whole file"]
+    patterns_bad: ["direct path in settings.json args array: MSYS2 still mangles despite args-array format", "export MSYS_NO_PATHCONV=1 before wsl call: conversion happens at arg-evaluation time in parent bash"]
+    env_friction: [{domain: windows-wsl2, issue: "MSYS2 path mangling persists even with MSYS_NO_PATHCONV=1 -- arg evaluation in parent bash", fix: "use bash -l login shell to find binaries via PATH instead of POSIX paths"}]
+    next_session: "RTK hook WORKING via bash -l; CLAUDE.md Pitfalls section added; /session-review renamed from /review; RTK fragility note in HANDOVER is now obsolete"
+
+  - slug: handover-surface-split
+    date: 2026-06-06
+    surface: claude-code
+    summary: "Split HANDOVER.md monolith into surface files: created HANDOVER_CODE.md + HANDOVER_COWORK.md; updated CLAUDE.md surface conventions; updated /wrap Step 4 routing"
+    decisions: ["HANDOVER_CODE.md and HANDOVER_COWORK.md created from scratch (no CODE/COWORK sections existed)", "Task 2 (remove duplicate fragilities) was no-op -- already cleaned by prior session", "/wrap Step 4 applies to Code sessions only; Chat/Cowork manage their own files"]
+    errors: ["Bash tool tried PowerShell array syntax: routed through pwsh -Command wrapper"]
+    patterns_good: ["parallel file creation (HANDOVER_CODE.md + HANDOVER_COWORK.md written simultaneously)", "Qdrant search confirmed 3-section HANDOVER as established pattern", "reading system-reminder pre-loaded content avoided redundant file reads"]
+    patterns_bad: []
+    env_friction: []
+    next_session: "HANDOVER split done: load @HANDOVER.md @HANDOVER_CODE.md for Code sessions; next task is integrity agent (design in HANDOVER_CHAT.md)"

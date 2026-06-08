@@ -1,0 +1,46 @@
+type: audit
+date: YYYY-MM-DD
+slug: kebab-case-slug
+surface: claude-code
+duration_min: 0
+
+task:
+  type: new-build
+  complexity: medium
+  planned: true
+  pivots: 0
+
+tasks:
+  total: 0
+  pass: 0
+  fail: 0
+
+files_modified: []
+
+decisions: []
+
+approach:
+  steps_taken: 0
+  retries: []
+  redundant_steps: []
+  better_approach: ""
+
+efficiency:
+  tokens_per_task: medium
+  bottleneck: ""
+  tokens_input_k: 0
+  tokens_output_k: 0
+
+errors: []
+
+env_friction: []
+
+patterns:
+  good: []
+  bad: []
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates: []
+
+next_session: ""

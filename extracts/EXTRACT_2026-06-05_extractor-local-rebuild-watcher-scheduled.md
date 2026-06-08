@@ -1,76 +1,74 @@
 ---
 type: extract
 date: 2026-06-05
-slug: extractor-local-rebuild-watcher-scheduled
-surface: claude-code
-topics: [n8n, docker, infra, claude-code, knowledge-base]
-skill_candidates: []
-agent_candidates: [audit-agent]
-duration_min: 120
+session_id: extractor-local-rebuild-watcher-scheduled
+surface: chat
+environment: both
+topics: [n8n, docker, memory, infra, python]
+source_file: 2026-06-05-124742_12fe7480-aeda-4cc8-be44-a28788ac71cd.jsonl
+processed_at: 2026-06-07T16:02:47.300Z
 ---
 
-## What Happened
-- Executed full PLAN.md: rerouted n8n session-knowledge-extractor from GitHub push → local vault write
-- Added Docker volume mount `D:/aidirectory/knowledge:/data/knowledge:rw` to n8n compose file
-- Discovered and fixed n8n 2.23 file-write restriction: added `N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge`
-- Removed GitHub Commit Extract + Skill Candidates nodes from workflow; added Write Extract To Disk (readWriteFile v1.1)
-- Fixed 3 bugs: truncation (first-50K + last-50K), DeepSeek date hallucination (prepend detected_at), watcher dedup (sent-files.log)
-- Updated /wrap command target path: queue\pending → knowledge\extracts
-- Created reconcile-extracts.ps1; moved 6 backlog EXTRACTs from queue\pending to vault
-- Registered n8n-instance MCP server in ~/.claude.json (localhost:5678, bearer JWT)
-- Ran /audit and /handover to document session
-- Deployed independent audit agent: verified all 8 tasks, mock-tested 3 historical sessions → 3/3 extracts produced, date-injection fix confirmed working
-- Converted session-watcher from always-on 2s-poll loop to twice-daily scheduled one-shot with Yes/No popup
-- Scheduled task re-registered: daily 09:00 + 18:00, -Once -Prompt flags, 1h execution limit
+# Session Extract: extractor-local-rebuild-watcher-scheduled
 
-## Decisions Made
-- `readWriteFile` v1.1 over `writeBinaryFile`: latter not in n8n 2.23 registry
-- MCP over REST for workflow edits: no N8N_API_KEY existed; MCP gives atomic update_workflow
-- MCP registered on localhost not Cloudflare tunnel: stable, no rotation risk
-- Popup auto-dismiss → SKIP (not run): respects "don't drain CPU during important work" intent
-- No fix for extract slug-collision silent overwrite: by-design idempotency (deliberate choice)
+## Decisions
+- **Remove GitHub dependency from extractor pipeline and write extracts directly to local vault**: GitHub commit node was causing 422 errors and pipeline failures; local file write is more reliable and eliminates external dependency
+- **Convert session-watcher from AtLogOn trigger to twice-daily scheduled task with user confirmation popup**: AtLogOn continuous loop was causing duplicate file processing; scheduled task with user gate prevents unwanted execution and reduces system load
+- **Accept historical loss of 32 missing extracts rather than attempting complex backfill**: Pre-fix pipeline failures resulted in missing extracts; re-POSTing historical sessions would be complex and error-prone; accept loss as known data gap
+- **Use Docker volume mount for n8n container to access knowledge extracts directory**: N8N RESTRICT_FILE_ACCESS prevents writing outside /data; volume mount allows n8n workflow to write to D:\aidirectory\knowledge\extracts via container path
+
+## Problems Solved
+- **GitHub commit node returning 422 errors causing pipeline failures**: Removed GitHub Commit node and replaced with Write Binary File node writing directly to local vault via Docker volume mount
+- **Truncation strategy discarding important context (only first 100K chars)**: Modified truncation to keep first 50K + last 50K characters to preserve both decisions and resolutions
+- **DeepSeek date hallucination in extracted JSON**: Prepend session date from webhook payload to user message in OpenRouter request body
+- **Session watcher processing same files multiple times due to in-memory deduplication**: Added persistent sent-files.log to D:\aidirectory\data\audits\ loaded on startup, appended on success, skip if present in poll loop
+- **Pipeline failures not visible in watcher logs (only shows 200 OK to webhook)**: Created reconciliation script (reconcile-extracts.ps1) to compare done-files vs source_file extracts and report missing extracts
 
 ## Errors Encountered
-- `claude mcp add` not on PATH: edited ~/.claude.json directly via Python | resolved
-- "file is not writable" on Write Extract To Disk (exec #382): n8n 2.23 file-access guard. Fixed with `N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge` | resolved
-- Inline PowerShell through bash mangled by French locale (`-f` operator, extglob): write .ps1 to disk + `-File` invocation | resolved (pattern now documented)
-- Task re-registration required elevation (UAC): used Start-Process -Verb RunAs | resolved
+- [resolved] GitHub commit node returning 422 errors -> Removed GitHub dependency entirely, writing extracts locally
+- [resolved] N8N RESTRICT_FILE_ACCESS preventing writes outside /data directory -> Added Docker volume mount from D:\aidirectory\knowledge to container /data/knowledge
+- [resolved] 32 historical extracts missing due to pre-fix pipeline failures -> Accept historical loss, sync delete stale workflow-lab agents, no backfill attempted
 
-## What Worked
-- n8n MCP `update_workflow` atomic 8-op batch: clean, no mid-workflow broken state
-- .ps1-to-disk pattern for all complex PS: sidestepped every bash↔PS quoting failure
-- Smoke test pattern (synthetic JSONL → webhook → poll vault): caught writability bug immediately
-- Independent audit agent: caught 4 issues including real contamination bug (watcher racing tests)
-
-## What Didn't Work
-- Inline PowerShell in Bash (quoting, locale, `-f`): broken every time. Never again.
-- Assuming volume mount alone sufficient for n8n file writes: wrong, second gate exists
-
-## Suggested Improvements
-- Add skill-candidate local Write node gated on `_has_candidates` (dropped when GitHub node removed)
-- Backfill 32 historical queue/done sessions with no extract (or accept as loss)
-- Live popup test with synthetic session to confirm dialog appearance for user
+## Patterns Identified
+- Windows PowerShell 7.6.2.0 Store install path breaks on upgrade - pin to stable MSI install in Program Files
+- N8N 2.23 file access restrictions require Docker volume mounts for external file writes
+- Session watcher needs persistent deduplication across restarts - file-based log vs in-memory
+- Truncation should preserve both beginning and end of long sessions (first 50K + last 50K)
+- LLM date hallucination can be fixed by injecting known date into user message rather than system prompt
 
 ## Files Modified
-- `D:\Vms\Dockers\N8N\docker-compose.yml`: volume mount + N8N_RESTRICT_FILE_ACCESS_TO (PLAN-authorized, outside aidirectory)
-- `scripts\session-watcher.ps1`: sent-files.log dedup + -Once/-Prompt/-PromptTimeoutSec flags + do/while loop
-- `scripts\_register-watcher-task.ps1`: twice-daily triggers, -Once -Prompt args, 1h limit
-- `scripts\reconcile-extracts.ps1`: new
-- `.claude\commands\wrap.md`: queue\pending → knowledge\extracts
-- `~\.claude.json`: n8n-instance MCP entry
-- `knowledge\audits\AUDIT_2026-06-05_extractor-local-only-rebuild.md`: new
-- n8n workflow `7l8aP0slan6tRkMy`: 8-op rewrite (not a file)
+- modified: D:\aidirectory\HANDOVER.md -- Updated CODE and COWORK sections with new extractor pipeline architecture, bug fixes, and watcher scheduling changes
+- modified: D:\aidirectory\scripts\session-watcher.ps1 -- Added persistent sent-files.log deduplication, changed from AtLogOn to scheduled task pattern
+- created: D:\aidirectory\scripts\reconcile-extracts.ps1 -- Created reconciliation script to compare done-files vs extracts and report pipeline failures
+- modified: n8n workflow 7l8aP0slan6tRkMy -- Removed GitHub Commit node, added Write Binary File node, fixed truncation (first 50K+last 50K), added date injection to DeepSeek prompt
+- created: D:\aidirectory\data\audits\sent-files.log -- Created persistent log of processed files for session-watcher deduplication
 
-## Next Session Should Know
-- Extractor is LOCAL only — no GitHub. End-to-end verified (exec #383 success).
-- n8n 2.23 REQUIRES `N8N_RESTRICT_FILE_ACCESS_TO=/data/knowledge` in compose or writes fail "not writable". File: `D:\Vms\Dockers\N8N\docker-compose.yml`.
-- Watcher now twice-daily scheduled (09:00 + 18:00) with Yes/No popup. Not a loop. Re-register with `_register-watcher-task.ps1` elevated if task breaks.
-- Reconciliation baseline: 47 done / 21 extracts / 32 missing (pre-fix historical failures).
-- Skill-candidate output dropped — no local replacement for removed GitHub skill node.
-- n8n MCP registered: `n8n-instance` in `~\.claude.json`, localhost:5678, bearer JWT.
-- sent-files.log at `data\audits\sent-files.log` (5 entries as of session end).
+## Next Session Must Know
+- Extractor pipeline now writes locally via Docker volume mount at /data/knowledge/extracts
+- Session watcher runs twice daily (09:00 & 18:00) with user confirmation popup, not AtLogOn
+- 32 historical extracts are missing and accepted as loss - no backfill planned
+- Reconciliation script at D:\aidirectory\scripts\reconcile-extracts.ps1 reports pipeline failures
+- Three bugs fixed: truncation (first 50K+last 50K), date injection, persistent deduplication
+- GitHub dependency removed - all extracts go to local vault only
+- N8N workflow ID 7l8aP0slan6tRkMy modified with Write Binary File node
+- Docker volume mount connects D:\aidirectory\knowledge to container /data/knowledge
 
-## Knowledge Candidates
-- SOP: n8n file write restrictions (N8N_RESTRICT_FILE_ACCESS_TO) — worth adding to sop_n8n_mcp-setup.md
-- Pattern: always use .ps1-to-disk + -File for PS on French Win locale — add to CLAUDE.md operational notes
-- Runbook: watcher task registration (elevated, two triggers, -Once -Prompt) — update runbook_stack_master-build.md
+## Skill Candidates
+- write-extract-disk: Writes session extract JSON as markdown to local knowledge vault via Docker volume mount
+- reconcile-extracts: Compares done-files directory with knowledge extracts to identify pipeline failures
+- session-watcher-dedupe: Manages persistent file deduplication log for session watcher across restarts
+
+## Token Waste Flags
+- Repeated description of same three bugs multiple times in handover updates
+- Detailed re-listing of MCP tools that weren't used in session
+- Multiple iterations of HANDOVER.md edits with similar content
+
+## Knowledge Base Updates
+- [update] sop_n8n_mcp-setup.md: Add pattern for local file writes via Docker volume mounts due to N8N RESTRICT_FILE_ACCESS
+- [update] runbook_stack_master-build.md: Include session extractor pipeline architecture changes (GitHub removal, local writes, volume mounts)
+- [create] sop_memory_extractor-pipeline.md: Document new extractor pipeline architecture, bug fixes, and reconciliation procedures
+- [create] ref_infra_docker-volume-mounts.md: Document Docker volume mount patterns for n8n file access restrictions
+
+## Links
+related:: [[_INDEX]]
+tags: n8n, docker, memory, infra, python

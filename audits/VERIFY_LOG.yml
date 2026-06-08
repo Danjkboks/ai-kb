@@ -1,0 +1,17 @@
+- date: 2026-06-06
+  time: 11:27
+  slug: smoke-test
+  result: PASS
+  tests_run: 1
+  tests_passed: 1
+  failures: []
+  output_tail: ""
+
+- date: 2026-06-07
+  slug: integrity-f04-f05-close
+  result: PASS
+  tests_run: 6
+  tests_passed: 6
+  failures: []
+  output_tail: ""
+

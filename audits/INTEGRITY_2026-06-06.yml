@@ -1,0 +1,74 @@
+type: integrity
+date: 2026-06-06
+target: global
+inputs:
+  extracts: 1   # EXTRACT_ARCHIVE_pre-2026-06-06.yml (36 condensed sessions)
+  audits: 1     # AUDIT_TEMPLATE.yml (empty scaffold, excluded from analysis)
+  prev_integrity_reviews: 0
+
+summary:
+  - "CLAUDE.md Phase 1 rules resolved all major recurring PowerShell and HANDOVER re-read patterns; 2 smaller gaps remain undocumented"
+  - "env_friction/docker systemic (4 sessions): tunnel cert managed via SkipTunnel flag but not documented in HANDOVER; docker exec MSYS2 fix not in CLAUDE.md Pitfalls"
+  - "1 HIGH risk: pydantic-core version pin only in HANDOVER -- unguarded pip upgrade silently breaks Qdrant /search"
+
+findings:
+
+  - id: F01
+    severity: HIGH
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\CLAUDE.md (Pitfalls section)"
+    issue: "pydantic-core pin constraint documented in HANDOVER only -- CLAUDE.md Pitfalls has no Qdrant/Python dependency rule"
+    evidence: "HANDOVER.md Known Fragilities: 'pydantic 2.13.4 requires pydantic-core==2.46.4. Re-pin if upgraded.'; phase3-retrieval-qdrant-extracts errors: 'pydantic-core 2.47.0 incompatible with pydantic 2.13.4: pin to pydantic-core==2.46.4' [source: EXTRACT_ARCHIVE_pre-2026-06-06.yml]"
+    prediction: "pip install --upgrade pydantic or pydantic-core in any Python session silently breaks the Qdrant indexer and /search command with no obvious error message pointing to the pin"
+    fix: "Add to CLAUDE.md Pitfalls under Qdrant: 'pydantic-core version pin: pydantic 2.13.4 requires pydantic-core==2.46.4 -- re-pin after any pydantic upgrade'"
+
+  - id: F02
+    severity: MEDIUM
+    confidence: HIGH
+    category: env_friction
+    component: "D:\\aidirectory\\CLAUDE.md (Pitfalls/WSL section)"
+    issue: "docker exec path mangling fix (double-slash //app/) not documented in CLAUDE.md Pitfalls"
+    evidence: "watcher-retry-llmlingua-guard errors: 'docker exec /app path mangled by Git Bash MSYS: use sh -c \"//app/...\" double-slash' [source: EXTRACT_ARCHIVE_pre-2026-06-06.yml]"
+    prediction: "Next docker exec call from Git Bash environment repeats the mangling error -- current MSYS2 Pitfall covers WSL paths but not docker exec paths"
+    fix: "Add to CLAUDE.md Pitfalls WSL section: 'docker exec paths from Git Bash: use double-slash prefix -- sh -c \"//app/script.sh\" not \"/app/script.sh\"'"
+
+  - id: F03
+    severity: MEDIUM
+    confidence: MEDIUM
+    category: env_friction
+    component: "D:\\aidirectory\\HANDOVER.md (Known Fragilities)"
+    issue: "Cloudflare tunnel SkipTunnel workaround present in env-launch.ps1 but not documented in HANDOVER Known Fragilities"
+    evidence: "env-launch-skill-execution next_session: 'SkipTunnel flag available'; 3 sessions with 'Cloudflare tunnel: missing origin cert -- needs cloudflared tunnel login' [source: EXTRACT_ARCHIVE_pre-2026-06-06.yml]; HANDOVER Known Fragilities mentions URL rotation only, not cert requirement or SkipTunnel flag"
+    prediction: "New session encountering tunnel cert failure won't know SkipTunnel flag exists and will attempt cloudflared tunnel login repeatedly"
+    fix: "Candidate for HANDOVER Known Fragilities -- see handover_candidates"
+
+  - id: F04
+    severity: LOW
+    confidence: HIGH
+    category: pattern
+    component: "D:\\aidirectory\\CLAUDE.md (general)"
+    issue: "Built-in skill names silently shadow custom .claude/commands/*.md files -- no documentation warning"
+    evidence: "pattern-mining-review-cmd patterns_bad: 'built-in review skill intercepted /review: executed manually by following .md steps' [source: EXTRACT_ARCHIVE_pre-2026-06-06.yml]; resolved by renaming to /session-review but the general risk is unrecorded"
+    prediction: "Future custom command named after any built-in skill (code-review, search, audit, etc.) will be silently intercepted without error"
+    fix: "Add one-line note to CLAUDE.md or integrity.md: 'Check built-in skill list before naming .claude/commands/*.md files -- built-ins take precedence'"
+
+  - id: F05
+    severity: LOW
+    confidence: MEDIUM
+    category: efficiency
+    component: "D:\\aidirectory\\agents\\n8n-workflow\\MANIFEST.md"
+    issue: "n8n PUT /workflows 400 (settings.additionalProperties rejected) and Code-node HTTP helper guessing occurred in 2 sessions -- confirm MANIFEST covers both patterns"
+    evidence: "phase2-n8n-pipeline patterns_bad: 'guessing n8n Code-node HTTP helper names -- two wasted iterations'; index-wikilinks-extract-links errors: 'PUT 400 settings additional properties: trim to executionOrder:v1' [source: EXTRACT_ARCHIVE_pre-2026-06-06.yml]"
+    prediction: "If n8n-workflow MANIFEST does not document PUT body trimming and Code-node HTTP absence, future workflow sessions repeat the same debugging iterations"
+    fix: "Read agents/n8n-workflow/MANIFEST.md and add: (1) PUT body must include only name/nodes/connections/settings{executionOrder:v1}; (2) Code nodes have no fetch/HTTP helper -- use HTTP Request node"
+
+unknowns:
+  - "SkipTunnel flag implementation: unable to confirm flag still exists in current env-launch.ps1 without reading the file -- F03 fix depends on this"
+  - "n8n-workflow/MANIFEST.md content: not read this session -- F05 severity may downgrade to resolved if MANIFEST already covers both patterns"
+
+delta: []   # no prior INTEGRITY reviews exist
+
+handover_candidates:
+  - "Cloudflare tunnel cert issue: add to Known Fragilities -- 'tunnel cert requires cloudflared tunnel login (one-time per machine); use SkipTunnel flag in env-launch.ps1 when cert is absent'"
+  - "pydantic-core pin: already in Known Fragilities; confirm also added to CLAUDE.md Pitfalls (see F01 fix)"

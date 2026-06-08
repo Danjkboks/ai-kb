@@ -1,0 +1,61 @@
+type: extract
+date: 2026-06-07
+slug: integrity-findings-apply
+surface: claude-code
+duration_min: 20
+
+task:
+  type: config
+  complexity: simple
+  planned: true
+  pivots: 0
+
+tasks:
+  total: 3
+  pass: 3
+  fail: 0
+
+files_modified:
+  - path: "CLAUDE.md"
+    change: "updated"
+  - path: "HANDOVER.md"
+    change: "updated"
+
+decisions:
+  - what: "F04 (skill shadowing) and F05 (n8n MANIFEST) not resolved -- flagged only"
+    why: "user instruction: flag in HANDOVER_CODE, do not resolve blindly; F05 needs MANIFEST read first"
+  - what: "F03 HANDOVER entry worded precisely from handover_candidates field, not verbatim"
+    why: "handover_candidates was a draft; entry refined for tone consistency with existing fragilities"
+  - what: "Spawned out-of-scope task for CLAUDE.md Operational Notes Docker path inconsistency"
+    why: "found while reading CLAUDE.md for F01/F02 edits; not in user scope; spawn keeps main session clean"
+
+approach:
+  steps_taken: 5
+  retries: []
+  redundant_steps:
+    - "Two separate Edit calls for F01 and F02 in CLAUDE.md -- a single pass with both changes would have been marginally faster (negligible)"
+  better_approach: "none identified -- session was straightforward targeted edits from a clear spec"
+
+efficiency:
+  tokens_per_task: low
+  bottleneck: ""
+  tokens_input_k: 20
+  tokens_output_k: 3
+
+errors: []
+
+env_friction: []
+
+patterns:
+  good:
+    - "read INTEGRITY findings file before editing -- exact evidence wording confirmed correct sections before touching files"
+    - "spot-check read after multi-edit on same file confirms placement in correct section"
+    - "spawn task for out-of-scope inconsistency found in passing (Docker build path) -- keeps session focused"
+  bad: []
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates: []
+
+next_session: "INTEGRITY F01/F02/F03 applied; F04 (skill shadowing) + F05 (n8n MANIFEST) still pending; VERIFY_2026-06-06_smoke-test.ps1 in knowledge/audits/ is stale test artifact needing deletion"
+verify_script: "knowledge/audits/VERIFY_2026-06-07_integrity-findings-apply.ps1"

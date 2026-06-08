@@ -1,0 +1,59 @@
+type: extract
+date: 2026-06-07
+slug: integrity-f04-f05-close
+surface: claude-code
+duration_min: 15
+
+task:
+  type: config
+  complexity: simple
+  planned: true
+  pivots: 0
+
+tasks:
+  total: 5
+  pass: 5
+  fail: 0
+
+files_modified:
+  - path: "agents/n8n-workflow/MANIFEST.md"
+    change: "updated"
+  - path: "HANDOVER.md"
+    change: "updated"
+  - path: "HANDOVER_CODE.md"
+    change: "updated"
+
+decisions:
+  - what: "F04 closed as no-conflict — no CLAUDE.md Pitfall added"
+    why: "All 7 custom commands (bootstrap, handover, search, audit, session-review, wrap, integrity) are clear of built-in skill names; original conflict (/review) already fixed by rename to /session-review"
+  - what: "F05 confirmed — MANIFEST and HANDOVER both updated"
+    why: "n8n-workflow/MANIFEST.md had no PUT body trimming rule or Code-node HTTP absence note; both gaps patched at source (MANIFEST) and surfaced in HANDOVER Known Fragilities for session visibility"
+
+approach:
+  steps_taken: 7
+  retries: []
+  redundant_steps: []
+  better_approach: ""
+
+efficiency:
+  tokens_per_task: low
+  bottleneck: ""
+  tokens_input_k: 30
+  tokens_output_k: 6
+
+errors: []
+
+env_friction: []
+
+patterns:
+  good:
+    - "Verify findings against live files before applying fixes — F04 confirmed no active conflicts before adding noise to CLAUDE.md"
+    - "Fix at the right layer: MANIFEST for durable agent knowledge, HANDOVER for session-visible fragility — both updated for F05"
+  bad: []
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates: []
+
+next_session: "All INTEGRITY findings resolved. One task remaining: delete knowledge/audits/VERIFY_2026-06-06_smoke-test.ps1 (confirm path, then Remove-Item with user sign-off)."
+verify_script: "knowledge/audits/VERIFY_2026-06-07_integrity-f04-f05-close.ps1"
