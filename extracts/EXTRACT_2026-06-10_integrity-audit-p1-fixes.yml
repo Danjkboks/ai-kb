@@ -1,0 +1,91 @@
+type: extract
+date: 2026-06-10
+slug: integrity-audit-p1-fixes
+surface: claude-code
+duration_min: 45
+
+task:
+  type: config
+  complexity: medium
+  planned: false
+  pivots: 0
+
+tasks:
+  total: 8
+  pass: 8
+  fail: 0
+
+files_modified:
+  - path: "knowledge/reports/INTEGRITY_REPORT_20260610.md"
+    change: created
+  - path: "knowledge/audits/INTEGRITY_2026-06-10.yml"
+    change: created
+  - path: ".claude/settings.json"
+    change: updated
+  - path: "CLAUDE.md"
+    change: updated
+  - path: "scripts/mine_patterns.py"
+    change: updated
+  - path: "scripts/verify-runner.ps1"
+    change: updated
+  - path: "HANDOVER_CODE.md"
+    change: updated
+  - path: "HANDOVER_CHAT.md"
+    change: updated
+  - path: "HANDOVER_COWORK.md"
+    change: updated
+  - path: "knowledge/audits/VERIFY_2026-06-10_integrity-fixes.ps1"
+    change: created
+
+decisions:
+  - what: "npm ban: remove from allow AND add to deny list (not just remove from allow)"
+    why: "Remove from allow stops silent execution; adding to deny makes the block explicit and visible — belt + suspenders on a security Non-Negotiable"
+  - what: "Extend verify-runner.ps1 window to 24h (not write SKIP entry)"
+    why: "Simpler fix; SKIP entry approach adds output parsing complexity; 24h covers all realistic session lengths without false skips"
+  - what: "Rewrite mine_patterns.py main() to use yaml.safe_load + new extract_yml_items() (not just glob change)"
+    why: "Changing only the glob would find .yml files but still try to parse them as markdown — would find zero sections and silently skip everything; full YAML parser needed"
+  - what: "Propagate npm ban to all 3 surface handovers (Code, Chat, Cowork)"
+    why: "CLAUDE.md Non-Negotiable is enforced in Code by settings.json deny list; Chat and Cowork have no deny list — HANDOVER is the only enforcement mechanism for those surfaces"
+  - what: "knowledge/reports/ directory created for INTEGRITY_REPORT output"
+    why: "Directory was missing; /integrity extended scope spec writes to this path"
+
+approach:
+  steps_taken: 12
+  retries:
+    - what: "VERIFY test F02-D: mine_patterns.py imports yaml — used ^import yaml pattern"
+      attempts: 2
+      fix: "PowerShell -match with ^ anchor does not support multiline; changed to (?m)^import yaml"
+  redundant_steps:
+    - "Read mine_patterns.py in two passes (first 30 lines + grep for glob pattern) — single full read at session start would have been faster"
+  better_approach: "Read mine_patterns.py in full on first pass; would have seen the glob and the section parser in one shot and planned both fixes together"
+
+efficiency:
+  tokens_per_task: low
+  bottleneck: ""
+  tokens_input_k: 120
+  tokens_output_k: 30
+
+errors:
+  - what: "PowerShell -match '^import yaml' fails multiline — ^ anchors to start of string not start of line"
+    fix: "Use (?m)^import yaml for multiline mode in PowerShell regex"
+    status: resolved
+
+env_friction: []
+
+patterns:
+  good:
+    - "Write a structured VERIFY script covering every fix before declaring done — caught one test regex bug in-session"
+    - "Run mine_patterns.py immediately after the .yml fix to confirm functional end-to-end (7 extracts processed, 0 errors)"
+    - "Security fixes: remove from allow AND add to deny — belt + suspenders pattern for non-negotiable rules"
+    - "Propagate security bans to all surfaces in one session — don't leave Chat/Cowork as an unguarded escape hatch"
+  bad:
+    - "PowerShell -match with ^ does not do multiline — always use (?m)^ when matching line-starts in multi-line strings"
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates:
+  - "PowerShell -match regex: ^ anchors to start of string, not start of line — use (?m)^ for multiline line-start matching"
+  - "Security deny list pattern: always pair remove-from-allow with add-to-deny; allow-list removal alone is insufficient"
+
+next_session: "All P1 integrity findings closed. One task remaining: delete smoke-test artifact knowledge/audits/VERIFY_2026-06-06_smoke-test.ps1 (confirm + Remove-Item with user sign-off)."
+verify_script: "knowledge/audits/VERIFY_2026-06-10_integrity-audit-p1-fixes.ps1"

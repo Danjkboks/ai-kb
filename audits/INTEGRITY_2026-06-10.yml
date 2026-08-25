@@ -1,0 +1,114 @@
+type: integrity
+date: 2026-06-10
+target: global
+inputs:
+  extracts: 7   # 6 real sessions + EXTRACT_ARCHIVE_pre-2026-06-06 (36 condensed)
+  audits: 2     # AUDIT_TEMPLATE (excluded) + INTEGRITY_2026-06-06.yml
+  prev_integrity_reviews: 1
+
+structural_priors:
+  scripts_god_node: "WorkflowExtractor (22 edges) — highest blast-radius in scripts/; index pipeline bottleneck"
+  agents_god_node: "check_n8n() (6 edges) — n8n API bottleneck; infra-ops→docker-ops→n8n chain confirmed"
+
+summary:
+  - "CRITICAL: Bash(npm*) in settings.json allow list directly violates CLAUDE.md Non-Negotiable — any npm command runs silently"
+  - "CRITICAL: mine_patterns.py globs EXTRACT_*.md / AUDIT_*.md; all files migrated to .yml on 2026-06-06 — script produces zero output since migration"
+  - "HIGH: verify-runner.ps1 2h window caused VERIFY_LOG gap for 2026-06-10 session; verification layer silently non-functional for long sessions"
+
+findings:
+
+  - id: F01
+    severity: CRITICAL
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\.claude\\settings.json (permissions.allow, line 22)"
+    issue: "Bash(npm*) in allow list permits any npm command without user prompt — violates Non-Negotiable"
+    evidence: "settings.json line 22: '\"Bash(npm*)\"'; CLAUDE.md Non-Negotiables: 'NEVER run npm install, npm i, or any npm command to install packages — no exceptions'"
+    prediction: "A model-generated npm install executes silently without the human checkpoint the Non-Negotiable is designed to preserve"
+    fix: "Remove \"Bash(npm*)\" from permissions.allow in .claude/settings.json"
+
+  - id: F02
+    severity: CRITICAL
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\scripts\\mine_patterns.py (lines 247-248)"
+    issue: "Script globs EXTRACT_*.md and AUDIT_*.md; Phase 1 migration (2026-06-06) converted all files to .yml — script finds 0 files"
+    evidence: "mine_patterns.py line 247: 'extracts = sorted(EXTRACTS_DIR.glob(\"EXTRACT_*.md\"))'; line 248: 'audits = [p for p in sorted(AUDITS_DIR.glob(\"AUDIT_*.md\"))...]'; pycache last modified 2026-06-05 (pre-migration); EXTRACT_ARCHIVE description says 'YAML migration complete'"
+    prediction: "Pattern mining produces empty output indefinitely. 6 post-migration sessions are invisible to rule-proposal pipeline. CLAUDE.md rules drift from actual session patterns."
+    fix: "Update lines 247-248 to glob *.yml; update section-name parser to read YAML fields (patterns.good, patterns.bad, errors, env_friction) not markdown headings"
+
+  - id: F03
+    severity: HIGH
+    confidence: HIGH
+    category: env_friction
+    component: "D:\\aidirectory\\scripts\\verify-runner.ps1 (line 15)"
+    issue: "2h freshness window causes silent skip — VERIFY_2026-06-10 ps1 exists but has no VERIFY_LOG entry"
+    evidence: "verify-runner.ps1 line 15: 'if (((Get-Date) - $latest.LastWriteTime).TotalHours -gt 2) { exit 0 }'; VERIFY_2026-06-10_graphify-integration-phases-1-4.ps1 created at 00:22:32 with no VERIFY_LOG entry; VERIFY_LOG has 0 entries for any 2026-06-10 session"
+    prediction: "Any session spanning more than 2 hours produces no VERIFY_LOG entry. Silent non-verification is indistinguishable from a passing run."
+    fix: "Change window to 24h, OR write a SKIP entry to VERIFY_LOG rather than silently exiting 0"
+
+  - id: F04
+    severity: HIGH
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\HANDOVER_CODE.md (Next Code Tasks, line 26)"
+    issue: "Task 2 'Copy graphify SKILL.md to Windows Claude path' is listed pending but file already exists"
+    evidence: "HANDOVER_CODE.md line 26: '2. **Copy graphify SKILL.md to Windows Claude path**'; Test-Path 'C:\\Users\\GnReN-PC\\.claude\\skills\\graphify\\SKILL.md' = True"
+    prediction: "Next Code session startup spends time investigating a completed task. Trust in HANDOVER as a reliable state document erodes."
+    fix: "Remove Task 2 from Next Code Tasks; update 'Prompt for next Code session' block to reflect only Task 1 (smoke-test delete) remains"
+
+  - id: F05
+    severity: MEDIUM
+    confidence: HIGH
+    category: env_friction
+    component: "D:\\aidirectory\\knowledge\\audits\\VERIFY_2026-06-06_smoke-test.ps1"
+    issue: "Smoke-test artifact present in audits/ — flagged for deletion in 3 consecutive extract next_session fields"
+    evidence: "File exists (confirmed); EXTRACT_2026-06-06 next_session: 'smoke-test VERIFY_2026-06-06_smoke-test.ps1 in knowledge/audits/ is a test artifact'; EXTRACT_2026-06-07 (×2) also flag it; HANDOVER_CODE Next Tasks item 1 explicitly references it"
+    prediction: "Artifact continues to exist indefinitely — each session flags it but never acts on it. No blocking risk but creates noise in audits/"
+    fix: "Confirm path, Remove-Item with user sign-off; also remove VERIFY_2026-06-06_phase2-3-verify-integrity.ps1 (superseded test artifact)"
+
+  - id: F06
+    severity: MEDIUM
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\knowledge\\_INDEX.md (metadata header)"
+    issue: "_INDEX.md has updated: 2026-05-23; 12+ new files added since then are unlisted"
+    evidence: "_INDEX.md line 5: 'updated: 2026-05-23'; 7 new EXTRACT_*.yml, INTEGRITY_2026-06-06.yml, VERIFY_LOG.yml, REVIEW_2026-06-10_graphify-trial.md, PLAN_showcase-html.md unlisted; Extracts section note 'Phase 2 not yet live' is factually wrong (Phase 2 live, 7 extracts present)"
+    prediction: "Navigation index diverges from vault state — agents and future sessions using _INDEX.md as the authoritative map will miss recent work"
+    fix: "Update _INDEX.md: bump date to 2026-06-10, add new extracts/audits/reports to relevant sections, fix stale 'not yet live' comment, add PLAN_showcase-html.md"
+
+  - id: F07
+    severity: LOW
+    confidence: HIGH
+    category: coherence
+    component: "D:\\aidirectory\\knowledge\\reports\\"
+    issue: "knowledge/reports/ directory did not exist; /integrity extended scope spec writes to this path"
+    evidence: "Glob('knowledge/reports/**/*') returned directory-does-not-exist error; created by this integrity session"
+    prediction: "Low risk now that directory exists. Future /integrity runs will succeed without this issue."
+    fix: "Add 'knowledge/reports/' to _INDEX.md Reports section; confirm it is excluded from .gitignore if it should not be tracked"
+
+unknowns:
+  - "projects/workflow-lab git state: 'fatal: not a git repository' — unclear if this is an uninitialized clone or an intentionally non-git working directory; CLAUDE.md claims github.com/Danjkboks/workflow-lab"
+  - "memory-ingest.ps1 vs memory-ingest.py: two files with same stem — unclear which is canonical; needs user triage"
+
+delta:
+  - id: F01
+    prev_date: 2026-06-06
+    status: RESOLVED   # pydantic-core pin added to CLAUDE.md
+  - id: F02
+    prev_date: 2026-06-06
+    status: RESOLVED   # docker exec double-slash added to CLAUDE.md
+  - id: F03
+    prev_date: 2026-06-06
+    status: RESOLVED   # Cloudflare SkipTunnel added to HANDOVER
+  - id: F04
+    prev_date: 2026-06-06
+    status: RESOLVED   # no active skill/command conflicts found
+  - id: F05
+    prev_date: 2026-06-06
+    status: RESOLVED   # n8n MANIFEST updated with PUT body + Code-node rules
+
+handover_candidates:
+  - "mine_patterns.py broken: add to Known Fragilities — 'mine_patterns.py uses .md glob; after any format migration, update globs before running'"
+  - "verify-runner.ps1 2h window: add to Known Fragilities — 'SessionEnd verify-runner skips scripts >2h old — long sessions produce no VERIFY_LOG entry; window should be 24h'"
+  - "HANDOVER_CODE Task 2 (graphify SKILL.md copy): mark complete — file confirmed at Windows Claude path"

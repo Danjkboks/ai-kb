@@ -1,0 +1,65 @@
+type: extract
+date: 2026-06-10
+slug: showcase-html-plan
+surface: chat
+duration_min: 60
+
+task:
+  type: research
+  complexity: medium
+  planned: false
+  pivots: 1
+
+tasks:
+  total: 3
+  pass: 3
+  fail: 0
+
+files_modified:
+  - path: "knowledge/PLAN_showcase-html.md"
+    change: created
+
+decisions:
+  - what: "Plan written to PLAN_showcase-html.md, not dumped in chat"
+    why: "File-as-source-of-truth principle — Code reads the file, chat produces the thinking"
+  - what: "No Bootstrap in Claude Code prompt"
+    why: "Existing project context — /bootstrap is for new projects only, showcase is a greenfield HTML file not a Claude Code project"
+  - what: "Single self-contained index.html, no frameworks, vanilla JS"
+    why: "Simplest deliverable — no build step, no dependencies, easy to share with a client"
+  - what: "Dark product UI design based on Attio/Linear reference image"
+    why: "Client wants to be impressed — polished dark UI signals professional product thinking"
+  - what: "Left-to-right five-zone map with click-to-expand and tooltips"
+    why: "Non-technical audience needs progressive disclosure — overview first, detail on demand"
+
+approach:
+  steps_taken: 5
+  retries: []
+  redundant_steps:
+    - "Full spec was written in chat before being moved to file — should have gone to file directly"
+  better_approach: "Open file write tool first, build spec directly into the file, never paste it in chat"
+
+efficiency:
+  tokens_per_task: medium
+  bottleneck: "Spec written in chat first then rewritten to file — doubled the output work"
+  tokens_input_k: 80
+  tokens_output_k: 35
+
+errors: []
+
+env_friction: []
+
+patterns:
+  good:
+    - "Catching the mistake immediately and writing the file in the same session rather than leaving it"
+    - "Design token extraction directly from reference image before writing the spec"
+    - "Tooltip copy written with a consistent 3-line pattern (What / Does / Why) — makes Code's job deterministic"
+  bad:
+    - "Writing a full build spec in chat instead of directly to a file — breaks the file-as-source-of-truth principle"
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates:
+  - "Pattern: Chat sessions that produce a build plan should open the file write tool first, not last"
+
+next_session: "PLAN_showcase-html.md is ready at D:\\aidirectory\\knowledge\\PLAN_showcase-html.md. Hand to Claude Code with the prompt at the bottom of that file. No bootstrap needed."
+verify_script: ""

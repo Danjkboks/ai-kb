@@ -1,0 +1,102 @@
+type: extract
+date: 2026-06-10
+slug: graphify-integration-phases-1-4
+surface: claude-code
+duration_min: 90
+
+task:
+  type: new-build
+  complexity: complex
+  planned: true
+  pivots: 1  # agents/ blocked by MANIFEST.md, pivoted to OpenRouter LLM pass
+
+tasks:
+  total: 7
+  pass: 7
+  fail: 0
+
+files_modified:
+  - path: ".claude/commands/integrity.md"
+    change: "updated"
+  - path: "knowledge/_INDEX.md"
+    change: "updated"
+  - path: "knowledge/audits/REVIEW_2026-06-10_graphify-trial.md"
+    change: "created"
+  - path: "agents/graphify-out/GRAPH_REPORT.md"
+    change: "created"
+  - path: "scripts/graphify-out/GRAPH_REPORT.md"
+    change: "created"
+
+decisions:
+  - what: "Run agents/ with OpenRouter/DeepSeek LLM pass despite plan saying AST-only"
+    why: "No --code-only CLI flag exists; MANIFEST.md files always trigger LLM requirement; corpus was tiny (8 docs, ~4577 tokens, ~$0.002)"
+  - what: "Read God Nodes + Surprising Connections only in /integrity pre-step"
+    why: "Community detail (36 communities, node lists) is noise for integrity checks — only bottleneck topology matters"
+  - what: "Register OpenRouter as graphify custom provider via providers.json"
+    why: "graphify has no native OpenRouter backend; OpenAI-compat API with custom base_url + OPENROUTER_API_KEY env var works cleanly"
+
+approach:
+  steps_taken: 14
+  retries:
+    - what: "pip install graphifyy in WSL2"
+      attempts: 4
+      fix: "pip3 (not pip) + do not pipe through | head -N (kills process mid-install)"
+    - what: "graphify agents/ --no-viz"
+      attempts: 3
+      fix: "Register openrouter custom provider + install openai package + correct model ID (deepseek/deepseek-chat not deepseek/deepseek-v3-0324)"
+  redundant_steps:
+    - "Attempted curl get-pip.py bootstrap (timed out) before finding pip3 was available"
+    - "Used | head -30 on pip install -v which killed the process and looked like a failed install"
+  better_approach: "Check pip3 first before apt-get or bootstrap; never pipe pip through head"
+
+efficiency:
+  tokens_per_task: high
+  bottleneck: "WSL2 pip/PATH troubleshooting consumed ~30% of session; shared interactively with user"
+  tokens_input_k: 85
+  tokens_output_k: 22
+
+errors:
+  - what: "pip command not found in WSL2 Ubuntu — only pip3 available after apt install"
+    fix: "Use pip3 explicitly; add ~/.local/bin to PATH via ~/.bashrc"
+    status: resolved
+  - what: "graphify agents/ exit 1 — no LLM API key for 8 doc files"
+    fix: "Registered openrouter custom provider in ~/.graphify/providers.json"
+    status: resolved
+  - what: "openai package missing — graphify openrouter backend requires it"
+    fix: "pip3 install openai --break-system-packages"
+    status: resolved
+  - what: "deepseek/deepseek-v3-0324 is not a valid OpenRouter model ID"
+    fix: "Updated providers.json default_model to deepseek/deepseek-chat"
+    status: resolved
+
+env_friction:
+  - domain: windows-wsl2
+    issue: "pip not in PATH; ~/.local/bin not in login shell PATH after pip3 install"
+    fix: "echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc && source ~/.bashrc"
+    status: resolved
+  - domain: windows-wsl2
+    issue: "SKILL.md installed to WSL2 ~/.claude/skills/ — invisible to Windows Claude Code"
+    fix: "Documented in REVIEW; requires manual copy to C:\\Users\\GnReN-PC\\.claude\\skills\\graphify\\ (not done this session)"
+    status: pending
+  - domain: python
+    issue: "graphify openrouter backend requires openai package separately (not bundled)"
+    fix: "pip3 install openai --break-system-packages"
+    status: resolved
+
+patterns:
+  good:
+    - "graphify provider add for custom OpenRouter routing — persists in ~/.graphify/providers.json, one-time setup"
+    - "Read only God Nodes + Surprising Connections sections of GRAPH_REPORT.md — full report is noise for structural queries"
+    - "Source .env before graphify run: set -a && source /mnt/d/aidirectory/.env && set +a"
+    - "Run graphify cluster-only after extract to generate GRAPH_REPORT.md with LLM community labeling"
+  bad:
+    - "Never pipe pip install through | head -N — kills the process mid-install, leaves partial state that looks like success"
+    - "Do not nest python3 -c calls inside WSL bash -l -c with $() — quoting breaks across shells"
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates:
+  - "WSL2 graphify setup SOP: pip3, PATH fix, openai package, openrouter provider registration"
+
+next_session: "graphify integrated: scripts/ (129n/152e) + agents/ (74n/70e) graphs live; /integrity pre-step wired; SKILL.md still needs copying to Windows Claude path C:\\Users\\GnReN-PC\\.claude\\skills\\graphify\\"
+verify_script: "knowledge/audits/VERIFY_2026-06-10_graphify-integration-phases-1-4.ps1"

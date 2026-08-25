@@ -1,0 +1,80 @@
+type: extract
+date: 2026-06-10
+slug: graphify-stack-eval
+surface: chat
+duration_min: 60
+
+task:
+  type: research
+  complexity: medium
+  planned: false
+  pivots: 0
+
+tasks:
+  total: 7
+  pass: 7
+  fail: 0
+
+files_modified:
+  - path: "CLAUDE.md"
+    change: "updated"
+  - path: "projects/graphify/graphify.md"
+    change: "created"
+  - path: "knowledge/extracts/EXTRACT_2026-06-10_graphify-stack-eval.yml"
+    change: "created"
+
+decisions:
+  - what: "Adopt graphify for code-only AST pass on scripts/ and agents/"
+    why: "Provides structural call-graph relationships that Qdrant and _INDEX.md cannot -- 129n/152e/36 communities on scripts/ at zero token cost. Complementary layer, not a replacement."
+  - what: "Run agents/ with LLM pass via OpenRouter/DeepSeek"
+    why: "MANIFEST.md files cannot be excluded from graphify; LLM pass cost ~$0.002 -- within budget. Rename workaround rejected as janky and would miss architectural rationale in MANIFEST files."
+  - what: "Wire graphify GRAPH_REPORT.md as /integrity pre-step"
+    why: "God Nodes + Surprising Connections from scripts/ structural graph adds a layer integrity agent didn't have before -- structural coherence vs session-derived coherence."
+  - what: "Add npm ban as Non-Negotiable in CLAUDE.md"
+    why: "Malicious packages circulating via npm. Rule must be unconditional and frame-proof."
+  - what: "Reject all three influencer guides (Karpathy wiki, AgriciDaniel, valentin_unmute)"
+    why: "All describe patterns AJ already implements, or with less sophistication. Karpathy pattern already implemented. graphify is the only net-new addition from this research sprint."
+
+approach:
+  steps_taken: 12
+  retries:
+    - what: "Copy SKILL.md from WSL2 to Windows Claude Code path via PowerShell"
+      attempts: 2
+      fix: "Source path was WSL2 filesystem -- must use WSL UNC path (\\\\wsl$\\Ubuntu\\home\\<user>\\) or cp from within WSL2 via /mnt/c/"
+  redundant_steps: []
+  better_approach: "SKILL.md install step in graphify.md plan should have specified Windows target path from the start, not WSL2."
+
+efficiency:
+  tokens_per_task: medium
+  bottleneck: "Extracting video frames from Instagram reel via ffmpeg -- necessary but time-consuming. Could have been avoided if reel was uploaded as images directly."
+  tokens_input_k: 80
+  tokens_output_k: 25
+
+errors:
+  - what: "PowerShell Copy-Item failed -- source path C:\\Users\\GnReN-PC\\.claude\\skills\\graphify does not exist"
+    fix: "Use WSL2 UNC path as source: \\\\wsl$\\Ubuntu\\home\\<user>\\.claude\\skills\\graphify, or cp from within WSL2"
+    status: pending
+
+env_friction:
+  - domain: windows-wsl2
+    issue: "Skills installed in WSL2 ~/.claude/skills/ are invisible to Windows Claude Code -- two separate .claude directories"
+    fix: "Copy SKILL.md to C:\\Users\\GnReN-PC\\.claude\\skills\\graphify\\SKILL.md via WSL2 cp to /mnt/c/"
+    status: pending
+
+patterns:
+  good:
+    - "Decision gate pattern in graphify.md (Phase 3 PASS/FAIL criteria defined before execution) prevented scope creep -- reviewer used exact gate questions"
+    - "Extracting video frames via ffmpeg for reel analysis is a reliable workaround for platform-locked content"
+    - "Prompt injection check as explicit first step before analyzing influencer content -- good discipline to maintain"
+    - "Specifying $0.05 hard stop in Claude Code prompt for LLM pass prevented runaway cost"
+  bad:
+    - "SKILL.md install target was specified as WSL2 path -- should always clarify Windows vs WSL2 target for Claude Code skills since Code runs on Windows"
+
+skill_candidates: []
+agent_candidates: []
+knowledge_candidates:
+  - "WSL2 vs Windows .claude path separation -- skills installed in WSL2 are invisible to Windows Claude Code sessions"
+  - "graphify PyPI name is graphifyy (double-y) -- graphify is an unrelated package"
+
+next_session: "graphify Phase 2 complete (scripts 129n/152e $0, agents 74n/70e $0.002), Phase 4 wired into /integrity. Two tasks pending: (1) copy SKILL.md from WSL2 to C:\\Users\\GnReN-PC\\.claude\\skills\\graphify\\ -- use WSL2 cp to /mnt/c/; (2) smoke-test artifact delete."
+verify_script: ""
